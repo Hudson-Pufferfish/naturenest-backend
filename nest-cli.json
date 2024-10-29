@@ -10,7 +10,7 @@
   "monorepo": true,
   "root": "apps/main-service",
   "projects": {
-    "main-service": {
+    "@apps/main-service": {
       "type": "application",
       "root": "apps/main-service",
       "entryFile": "main",
@@ -19,7 +19,7 @@
         "tsConfigPath": "apps/main-service/tsconfig.app.json"
       }
     },
-    "webhook-service": {
+    "@apps/webhook-service": {
       "type": "application",
       "root": "apps/webhook-service",
       "entryFile": "main",
@@ -28,7 +28,7 @@
         "tsConfigPath": "apps/webhook-service/tsconfig.app.json"
       }
     },
-    "cron-service": {
+    "@apps/cron-service": {
       "type": "application",
       "root": "apps/cron-service",
       "entryFile": "main",
