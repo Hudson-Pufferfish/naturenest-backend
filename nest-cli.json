@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/main-service/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/main-service/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/main-service",
+  "projects": {
+    "main-service": {
+      "type": "application",
+      "root": "apps/main-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/main-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/main-service/tsconfig.app.json"
+      }
+    },
+    "webhook-service": {
+      "type": "application",
+      "root": "apps/webhook-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/webhook-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/webhook-service/tsconfig.app.json"
+      }
+    },
+    "cron-service": {
+      "type": "application",
+      "root": "apps/cron-service",
+      "entryFile": "main",
+      "sourceRoot": "apps/cron-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cron-service/tsconfig.app.json"
+      }
+    }
+  }
+}
