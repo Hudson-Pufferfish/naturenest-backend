@@ -11,7 +11,9 @@ describe('WebhookServiceController', () => {
       providers: [WebhookServiceService],
     }).compile();
 
-    webhookServiceController = app.get<WebhookServiceController>(WebhookServiceController);
+    webhookServiceController = app.get<WebhookServiceController>(
+      WebhookServiceController,
+    );
   });
 
   describe('root', () => {
