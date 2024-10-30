@@ -8,10 +8,11 @@ export class CategoryService implements OnModuleInit {
     if (categories.length > 0) return;
     await this.databaseService.category.createMany({
       data: [
+        { name: 'farmhouse', description: 'farmhouse' },
         { name: 'cabin', description: 'cabin' },
-        { name: 'airstream', description: 'airstream' },
-        { name: 'tent', description: 'tent' },
-        { name: 'warehouse', description: 'warehouse' },
+        { name: 'yurt', description: 'yurt' },
+        { name: 'safari_tent', description: 'safari_tent' },
+        { name: 'converted_barn', description: 'converted_barn' },
       ],
     });
   }
