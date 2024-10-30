@@ -1,8 +1,9 @@
-import { DomainModule } from './domain/domain.module';
 import { Module } from '@nestjs/common';
-import { HealthModule } from './health/health.module';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { DatabaseModule } from './database/database.module';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { DomainModule } from './domain/domain.module';
+import { AuthGuard } from './domain/guard/auth.guard';
+import { HealthModule } from './health/health.module';
 import { SerializeInterceptor } from './interceptor/serialize.interceptor';
 
 @Module({
@@ -11,6 +12,10 @@ import { SerializeInterceptor } from './interceptor/serialize.interceptor';
     {
       provide: APP_INTERCEPTOR,
       useClass: SerializeInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
   ],
 })
