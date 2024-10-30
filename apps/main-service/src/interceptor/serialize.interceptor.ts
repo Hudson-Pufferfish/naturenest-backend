@@ -1,3 +1,4 @@
+import { IsArray } from 'class-validator';
 import {
   Injectable,
   NestInterceptor,
@@ -17,7 +18,7 @@ export class SerializeInterceptor implements NestInterceptor {
     );
   }
   formatResponse(response: any) {
-    if (response instanceof Object) {
+    if (!response.length) {
       delete response.password;
       return {
         status: 200,

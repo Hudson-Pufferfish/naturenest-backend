@@ -1,22 +1,84 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 model User {
   id          String    @id @default(cuid())
   email       String    @unique
   username    String    @unique
-  password    String
+  password    String    
   firstName   String?   @map("first_name")
   lastName    String?   @map("last_name")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt  @map("updated_at")
+  properties  Property[]
+
   @@map("user")
+}
+
+model Country {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(20)
+  code        String    @db.VarChar(3)
+  // properties  Property[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("country")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(20)
+  description String    @db.Text
+  properties  Property[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("category")
+}
+
+model Amenity {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(20)
+  // properties  Property[]
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("amenity")
+}
+
+model Property {
+  id          String    @id @default(cuid())
+  name        String    @db.VarChar(20)
+  tagLine     String    @db.VarChar(30) @map("tag_line")
+  categoryId  String    @map("category_id")
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  // countryId   String    @map("country_id")
+  // country     Country   @relation(fields: [countryId], references: [id])
+  description String    @db.Text
+  coverUrl    String    @db.Text @map("cover_url")
+  price       Float
+  guests      Int
+  bedrooms    Int
+  beds        Int
+  baths       Int
+  // amenities  Amenity[]
+  creatorId   String    @map("creator_id")
+  creator     User      @relation(fields: [creatorId], references: [id])
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("property")
 }
