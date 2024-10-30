@@ -11,7 +11,9 @@ describe('CronServiceController', () => {
       providers: [CronServiceService],
     }).compile();
 
-    cronServiceController = app.get<CronServiceController>(CronServiceController);
+    cronServiceController = app.get<CronServiceController>(
+      CronServiceController,
+    );
   });
 
   describe('root', () => {

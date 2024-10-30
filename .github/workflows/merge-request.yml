@@ -1,0 +1,19 @@
+name: NestJS Pull Request Build
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+      - name: Install dependencies
+        run: yarn install
+      - name: Build the main-service package
+        run: yarn build @apps/main-service
+      - name: Check for code quality
+        run: yarn lint apps/main-service
