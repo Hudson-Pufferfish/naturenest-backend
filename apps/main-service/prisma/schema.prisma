@@ -23,6 +23,7 @@ model User {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt  @map("updated_at")
   properties  Property[]
+  reservations Reservation[]
 
   @@map("user")
 }
@@ -79,6 +80,22 @@ model Property {
   creator     User      @relation(fields: [creatorId], references: [id])
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt  @map("updated_at")
+  reservations Reservation[]
 
   @@map("property")
+}
+
+model Reservation {
+  id          String    @id @default(cuid())
+  propertyId  String    @map("property_id")
+  property    Property  @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id])
+  totalPrice  Float     @map("total_price")
+  startDate   String    @map("start_date")
+  endDate     String    @map("end_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt  @map("updated_at")
+
+  @@map("reservation")
 }
