@@ -1,42 +1,36 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
-export class CreatePropertyDto {
-  @IsNotEmpty()
+import { IsOptional, IsNumber, IsString, MaxLength } from 'class-validator';
+export class UpdatePropertyDto {
+  @IsOptional()
   @IsString()
   name: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @MaxLength(30)
   tagLine: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   description: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   price: number;
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   categoryId: string;
-  // @IsNotEmpty()
-  // @IsString()
-  // countryId: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   coverUrl: string;
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   guests: number;
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   bedrooms: number;
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   beds: number;
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   baths: number;
-  // @IsNotEmpty()
-  // @IsArray()
-  // amenityIds: string[];
   // extract from token
   creatorId: string;
 }
