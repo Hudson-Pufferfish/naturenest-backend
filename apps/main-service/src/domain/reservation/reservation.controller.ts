@@ -1,14 +1,26 @@
-import { Body, Controller, Get, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UserReq } from '../../common/decorator/user.decorator';
 import { User } from '@prisma/client';
+import { ReservationGuard } from './reservation.guard';
+
 @Controller('/reservations')
 export class ReservationController {
   constructor(private reservationService: ReservationService) {}
+
+  @UseGuards(ReservationGuard)
   @Get()
   findAll(@Query('propertyId') propertyId: string) {
-    // TODO: query reservations by propertyId
+    return this.reservationService.findAll(propertyId);
   }
   @Post()
   create(@UserReq() user: User, @Body() data: CreateReservationDto) {

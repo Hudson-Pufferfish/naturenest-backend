@@ -27,4 +27,10 @@ export class ReservationService {
     });
     // TODO: send email to user
   }
+  async findAll(propertyId?: string) {
+    const where = propertyId ? { propertyId } : {};
+    return this.databaseService.reservation.findMany({
+      where,
+    });
+  }
 }
