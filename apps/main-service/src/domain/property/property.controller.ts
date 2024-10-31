@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   Patch,
   Post,
@@ -35,5 +36,13 @@ export class PropertyController {
   @Delete(':propertyId')
   deleteById(@Param('propertyId') propertyId: string) {
     return this.propertyService.deleteOrFailById(propertyId);
+  }
+  @Get(':propertyId')
+  getById(@Param('propertyId') propertyId: string) {
+    return this.propertyService.findOrFailById(propertyId);
+  }
+  @Get()
+  getAll() {
+    return this.propertyService.findAll();
   }
 }

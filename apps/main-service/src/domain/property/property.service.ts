@@ -53,4 +53,8 @@ export class PropertyService {
 
     return foundProperty;
   }
+
+  async findAll() {
+    return this.databaseService.property.findMany();
+  }
 }
