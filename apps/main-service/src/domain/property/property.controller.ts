@@ -14,6 +14,7 @@ import { UserReq } from '../../common/decorator/user.decorator';
 import { User } from '@prisma/client';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { PropertyGuard } from './property.guard';
+import { Public } from '../../common/decorator/public.decorator';
 
 @Controller('properties')
 export class PropertyController {
@@ -41,6 +42,7 @@ export class PropertyController {
   getById(@Param('propertyId') propertyId: string) {
     return this.propertyService.findOrFailById(propertyId);
   }
+  @Public()
   @Get()
   getAll() {
     return this.propertyService.findAll();
