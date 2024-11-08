@@ -9,6 +9,16 @@ import {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // Added CORS configuration
+  app.enableCors({
+    origin: [
+      'http://localhost:3000', // Local development
+      'https://your-future-naturenest-frontend-link.com', // Future deployed frontend
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
+    credentials: true, // Allow credentials if necessary
+  });
+
   app.setGlobalPrefix('api');
   // setup validation
   app.useGlobalPipes(
