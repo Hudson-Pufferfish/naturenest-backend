@@ -57,4 +57,15 @@ export class PropertyService {
   async findAll() {
     return this.databaseService.property.findMany();
   }
+
+  async searchByName(name: string) {
+    return this.databaseService.property.findMany({
+      where: {
+        name: {
+          contains: name,
+          mode: 'insensitive',
+        },
+      },
+    });
+  }
 }

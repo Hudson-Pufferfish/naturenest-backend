@@ -38,6 +38,11 @@ export class PropertyController {
   deleteById(@Param('propertyId') propertyId: string) {
     return this.propertyService.deleteOrFailById(propertyId);
   }
+  @Public()
+  @Get('search')
+  searchByName(@Param('name') name: string) {
+    return this.propertyService.searchByName(name);
+  }
   @Get(':propertyId')
   getById(@Param('propertyId') propertyId: string) {
     return this.propertyService.findOrFailById(propertyId);
