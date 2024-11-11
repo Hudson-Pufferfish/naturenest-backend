@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import bcrypt from 'bcrypt';
 import { DatabaseService } from './../../database/database.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -6,6 +10,20 @@ import { CreateUserDto } from './dto/create-user.dto';
 export class UserService {
   constructor(private databaseService: DatabaseService) {}
   async create(data: CreateUserDto) {
+    const existingEmail = await this.databaseService.user.findUnique({
+      where: { email: data.email },
+    });
+    if (existingEmail) {
+      throw new BadRequestException('Email already exists');
+    }
+
+    const existingUsername = await this.databaseService.user.findUnique({
+      where: { username: data.username },
+    });
+    if (existingUsername) {
+      throw new BadRequestException('Username already exists');
+    }
+
     const hashedPassword = await this.hashPassword(data.password);
     const userData = {
       email: data.email,
