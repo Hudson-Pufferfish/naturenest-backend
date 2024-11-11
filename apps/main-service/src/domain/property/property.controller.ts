@@ -43,13 +43,17 @@ export class PropertyController {
   searchByName(@Param('name') name: string) {
     return this.propertyService.searchByName(name);
   }
-  @Get(':propertyId')
-  getById(@Param('propertyId') propertyId: string) {
-    return this.propertyService.findOrFailById(propertyId);
-  }
   @Public()
   @Get()
   getAll() {
     return this.propertyService.findAll();
+  }
+  @Get('my-properties')
+  getMyProperties(@UserReq() user: User) {
+    return this.propertyService.findAllByCreatorId(user.id);
+  }
+  @Get(':propertyId')
+  getById(@Param('propertyId') propertyId: string) {
+    return this.propertyService.findOrFailById(propertyId);
   }
 }

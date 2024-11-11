@@ -68,4 +68,22 @@ export class PropertyService {
       },
     });
   }
+
+  async findAllByCreatorId(creatorId: string) {
+    return this.databaseService.property.findMany({
+      where: {
+        creatorId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        category: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+  }
 }
