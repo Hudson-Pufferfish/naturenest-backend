@@ -6,6 +6,7 @@ import {
 import bcrypt from 'bcrypt';
 import { DatabaseService } from './../../database/database.service';
 import { CreateUserDto } from './dto/create-user.dto';
+import { ResetPasswordDto } from './dto/reset-password.dto';
 @Injectable()
 export class UserService {
   constructor(private databaseService: DatabaseService) {}
@@ -53,5 +54,49 @@ export class UserService {
       throw new NotFoundException('User not found');
     }
     return user;
+  }
+
+  async resetPassword(data: ResetPasswordDto) {
+    const user = await this.databaseService.user.findUnique({
+      where: { email: data.email },
+    });
+
+    if (!user) {
+      throw new NotFoundException('No user found with this email');
+    }
+
+    if (user.username !== data.username) {
+      throw new BadRequestException('Username does not match with the email');
+    }
+
+    if (user.firstName !== data.firstName) {
+      throw new BadRequestException('First name does not match our records');
+    }
+
+    if (user.lastName !== data.lastName) {
+      throw new BadRequestException('Last name does not match our records');
+    }
+
+    if (data.newPassword !== data.confirmNewPassword) {
+      throw new BadRequestException(
+        'Confirmed password must match the new password',
+      );
+    }
+
+    const hashedPassword = await this.hashPassword(data.newPassword);
+
+    return await this.databaseService.user.update({
+      where: { email: data.email },
+      data: {
+        password: hashedPassword,
+      },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        firstName: true,
+        lastName: true,
+      },
+    });
   }
 }
