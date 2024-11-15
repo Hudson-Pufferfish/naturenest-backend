@@ -30,6 +30,9 @@
 
 ```bash
 $ yarn install
+
+# generate prisma schema
+$ yarn migration:generate
 ```
 
 ## Running the app
@@ -39,7 +42,7 @@ $ yarn install
 $ yarn run start
 
 # watch mode
-$ yarn run start:dev
+$ yarn run start:dev:main
 
 # production mode
 $ yarn run start:prod
