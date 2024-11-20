@@ -69,18 +69,8 @@ export class UserService {
       throw new BadRequestException('Username does not match with the email');
     }
 
-    if (user.firstName !== data.firstName) {
-      throw new BadRequestException('First name does not match our records');
-    }
-
-    if (user.lastName !== data.lastName) {
-      throw new BadRequestException('Last name does not match our records');
-    }
-
     if (data.newPassword !== data.confirmNewPassword) {
-      throw new BadRequestException(
-        'Confirmed password must match the new password',
-      );
+      throw new BadRequestException('Passwords do not match');
     }
 
     const hashedPassword = await this.hashPassword(data.newPassword);

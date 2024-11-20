@@ -15,10 +15,4 @@ export class ResetPasswordDto {
   @IsString()
   @MinLength(6)
   confirmNewPassword: string;
-
-  @IsString()
-  firstName: string;
-
-  @IsString()
-  lastName: string;
 }
