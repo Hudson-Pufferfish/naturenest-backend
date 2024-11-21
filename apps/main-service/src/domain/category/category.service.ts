@@ -10,6 +10,9 @@ export class CategoryService implements OnModuleInit {
       data: [
         { name: 'farmhouse', description: 'farmhouse' },
         { name: 'cabin', description: 'cabin' },
+        { name: 'airstream', description: 'airstream' },
+        { name: 'tent', description: 'tent' },
+        { name: 'warehouse', description: 'warehouse' },
         { name: 'yurt', description: 'yurt' },
         { name: 'safari_tent', description: 'safari_tent' },
         { name: 'converted_barn', description: 'converted_barn' },
