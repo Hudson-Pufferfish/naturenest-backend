@@ -18,7 +18,7 @@ export class SerializeInterceptor implements NestInterceptor {
     );
   }
   formatResponse(response: any) {
-    if (!response.length) {
+    if (!Array.isArray(response)) {
       delete response.password;
       return {
         status: 200,
@@ -26,6 +26,10 @@ export class SerializeInterceptor implements NestInterceptor {
         data: _.omit(response, 'password'),
       };
     }
-    return response;
+    return {
+      status: 200,
+      message: 'Success',
+      data: response,
+    };
   }
 }
