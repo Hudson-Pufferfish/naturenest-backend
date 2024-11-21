@@ -54,16 +54,44 @@ export class PropertyService {
     return foundProperty;
   }
 
-  async findAll() {
-    return this.databaseService.property.findMany();
-  }
+  async findMany({
+    skip,
+    take,
+    categoryName,
+    propertyName,
+  }: {
+    skip?: number;
+    take?: number;
+    categoryName?: string;
+    propertyName?: string;
+  }) {
+    const where: any = {};
 
-  async searchByName(name: string) {
+    if (categoryName) {
+      where.category = {
+        name: categoryName,
+      };
+    }
+
+    if (propertyName) {
+      where.name = {
+        contains: propertyName,
+        mode: 'insensitive',
+      };
+    }
+
     return this.databaseService.property.findMany({
-      where: {
-        name: {
-          contains: name,
-          mode: 'insensitive',
+      where,
+      skip: skip || 0,
+      take: take || 10,
+      include: {
+        category: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
         },
       },
     });

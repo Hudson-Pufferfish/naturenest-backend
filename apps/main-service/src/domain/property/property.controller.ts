@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { CreatePropertyDto } from './dto/create-property.dto';
@@ -19,12 +20,29 @@ import { Public } from '../../common/decorator/public.decorator';
 @Controller('properties')
 export class PropertyController {
   constructor(private propertyService: PropertyService) {}
+
   @Post()
   create(@Body() data: CreatePropertyDto, @UserReq() user: User) {
     data.creatorId = user.id;
     return this.propertyService.create(data);
   }
-  // TODO: add get properties using cursor based pagination
+
+  @Public()
+  @Get()
+  find(
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+    @Query('categoryName') categoryName?: string,
+    @Query('propertyName') propertyName?: string,
+  ) {
+    return this.propertyService.findMany({
+      skip,
+      take,
+      categoryName,
+      propertyName,
+    });
+  }
+
   @UseGuards(PropertyGuard)
   @Patch(':propertyId')
   updateById(
@@ -33,25 +51,18 @@ export class PropertyController {
   ) {
     return this.propertyService.updateOrFailById(propertyId, data);
   }
+
   @UseGuards(PropertyGuard)
   @Delete(':propertyId')
   deleteById(@Param('propertyId') propertyId: string) {
     return this.propertyService.deleteOrFailById(propertyId);
   }
-  @Public()
-  @Get('search')
-  searchByName(@Param('name') name: string) {
-    return this.propertyService.searchByName(name);
-  }
-  @Public()
-  @Get()
-  getAll() {
-    return this.propertyService.findAll();
-  }
+
   @Get('my-properties')
   getMyProperties(@UserReq() user: User) {
     return this.propertyService.findAllByCreatorId(user.id);
   }
+
   @Get(':propertyId')
   getById(@Param('propertyId') propertyId: string) {
     return this.propertyService.findOrFailById(propertyId);
