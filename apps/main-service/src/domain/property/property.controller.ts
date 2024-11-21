@@ -33,8 +33,14 @@ export class PropertyController {
     @Query('skip') skip?: number,
     @Query('take') take?: number,
     @Query('categoryName') categoryName?: string,
+    @Query('propertyName') propertyName?: string,
   ) {
-    return this.propertyService.findMany({ skip, take, categoryName });
+    return this.propertyService.findMany({
+      skip,
+      take,
+      categoryName,
+      propertyName,
+    });
   }
 
   @UseGuards(PropertyGuard)
@@ -50,12 +56,6 @@ export class PropertyController {
   @Delete(':propertyId')
   deleteById(@Param('propertyId') propertyId: string) {
     return this.propertyService.deleteOrFailById(propertyId);
-  }
-
-  @Public()
-  @Get('search')
-  searchByName(@Param('name') name: string) {
-    return this.propertyService.searchByName(name);
   }
 
   @Get('my-properties')

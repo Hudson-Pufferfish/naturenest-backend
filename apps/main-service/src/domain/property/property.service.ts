@@ -58,18 +58,27 @@ export class PropertyService {
     skip,
     take,
     categoryName,
+    propertyName,
   }: {
     skip?: number;
     take?: number;
     categoryName?: string;
+    propertyName?: string;
   }) {
-    const where = categoryName
-      ? {
-          category: {
-            name: categoryName,
-          },
-        }
-      : {};
+    const where: any = {};
+
+    if (categoryName) {
+      where.category = {
+        name: categoryName,
+      };
+    }
+
+    if (propertyName) {
+      where.name = {
+        contains: propertyName,
+        mode: 'insensitive',
+      };
+    }
 
     return this.databaseService.property.findMany({
       where,
@@ -83,17 +92,6 @@ export class PropertyService {
             username: true,
             email: true,
           },
-        },
-      },
-    });
-  }
-
-  async searchByName(name: string) {
-    return this.databaseService.property.findMany({
-      where: {
-        name: {
-          contains: name,
-          mode: 'insensitive',
         },
       },
     });
