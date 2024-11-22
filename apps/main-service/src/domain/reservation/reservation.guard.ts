@@ -7,14 +7,12 @@ import {
 } from '@nestjs/common';
 import { ReservationService } from './reservation.service';
 import { PropertyService } from '../property/property.service';
-import { DatabaseService } from '../../database/database.service';
 
 @Injectable()
 export class ReservationGuard implements CanActivate {
   constructor(
     private reservationService: ReservationService,
     private propertyService: PropertyService,
-    private databaseService: DatabaseService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -37,22 +35,21 @@ export class ReservationGuard implements CanActivate {
 
     // Case 2: Accessing a specific reservation
     if (reservationId) {
-      const reservation = await this.databaseService.reservation.findUnique({
-        where: { id: reservationId },
-        include: {
-          property: true,
-        },
-      });
-
-      if (!reservation) {
-        throw new NotFoundException('Reservation not found');
+      let reservation;
+      try {
+        reservation = await this.reservationService.findById(reservationId);
+      } catch (error) {
+        if (error instanceof NotFoundException) {
+          throw new NotFoundException('Reservation not found');
+        }
+        throw error;
       }
 
       // For updates and deletes, allow both reservation creator and property owner
       if (
         ['DELETE', 'PATCH'].includes(method) &&
         reservation.userId !== user.id &&
-        reservation.property.creatorId !== user.id
+        reservation.property.creator.id !== user.id
       ) {
         throw new ForbiddenException(
           `You are not authorized to ${
@@ -65,7 +62,7 @@ export class ReservationGuard implements CanActivate {
       if (
         method === 'GET' &&
         reservation.userId !== user.id &&
-        reservation.property.creatorId !== user.id
+        reservation.property.creator.id !== user.id
       ) {
         throw new ForbiddenException(
           'You are not authorized to view this reservation',
