@@ -48,10 +48,11 @@ export class ReservationGuard implements CanActivate {
         throw new NotFoundException('Reservation not found');
       }
 
-      // For updates and deletes, only the reservation creator can perform the action
+      // For updates and deletes, allow both reservation creator and property owner
       if (
         ['DELETE', 'PATCH'].includes(method) &&
-        reservation.userId !== user.id
+        reservation.userId !== user.id &&
+        reservation.property.creatorId !== user.id
       ) {
         throw new ForbiddenException(
           `You are not authorized to ${
