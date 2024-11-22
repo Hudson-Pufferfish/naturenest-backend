@@ -5,6 +5,7 @@ import {
   ValidationError,
   ValidationPipe,
 } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -32,6 +33,21 @@ async function bootstrap() {
       transform: true,
     }),
   );
+
+  // Swagger configuration with factory
+  const config = new DocumentBuilder()
+    .setTitle('NatureNest API')
+    .setDescription('The NatureNest API documentation')
+    .setVersion('1.0')
+    .addTag('auth', 'Authentication endpoints for sign-in, register, etc.')
+    .addTag('users', 'User management endpoints')
+    .addTag('health', 'Health check endpoints')
+    .addTag('categories', 'Property category management endpoints')
+    .addTag('reservations', 'Reservation management endpoints')
+    .addTag('properties', 'Property management endpoints')
+    .build();
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('/api/docs', app, documentFactory);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
