@@ -58,7 +58,7 @@ export class PropertyController {
     return this.propertyService.deleteOrFailById(propertyId);
   }
 
-  @Get('my-properties')
+  @Get('my')
   getMyProperties(@UserReq() user: User) {
     return this.propertyService.findAllByCreatorId(user.id);
   }
