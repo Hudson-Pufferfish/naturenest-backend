@@ -1,17 +1,30 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, Min } from 'class-validator';
+import {
+  IsDateFormat,
+  IsBeforeEndDate,
+} from '../../../common/decorator/date.decorator';
+
 export class CreateReservationDto {
   @IsNotEmpty()
   @IsString()
   propertyId: string;
-  // TODO: add validation for YYYY-MM-DD (MM should be 01-12, DD 01-31)
+
   @IsNotEmpty()
   @IsString()
+  @IsDateFormat()
+  @IsBeforeEndDate('endDate')
   startDate: string;
-  // TODO: add validation for YYYY-MM-DD
-  // TODO: add validation for startDate < endDate
+
   @IsNotEmpty()
   @IsString()
+  @IsDateFormat()
   endDate: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  @Min(1)
+  numberOfGuests: number;
+
   // extract from token
   userId: string;
 }

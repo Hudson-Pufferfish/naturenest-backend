@@ -81,6 +81,8 @@ model Property {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt  @map("updated_at")
   reservations Reservation[]
+  totalNightsBooked Int?      @default(0)  // Nullable with default value
+  totalIncome       Float?     @default(0)  // Nullable with default value
 
   @@map("property")
 }
@@ -96,6 +98,7 @@ model Reservation {
   endDate     String    @map("end_date")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt  @map("updated_at")
+  numberOfGuests Int?      @default(1) @map("number_of_guests")
 
   @@map("reservation")
 }
