@@ -33,6 +33,9 @@ $ yarn install
 
 # generate prisma schema
 $ yarn migration:generate
+
+# if you need to install more dependencies
+$ yarn add <package> -W
 ```
 
 ## Running the app
@@ -43,6 +46,8 @@ $ yarn run start
 
 # watch mode
 $ yarn run start:dev:main
+# or
+$ yarn start:dev:main
 
 # production mode
 $ yarn run start:prod
