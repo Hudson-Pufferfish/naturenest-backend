@@ -45,6 +45,32 @@ export class PropertyService {
   async findOrFailById(propertyId: string) {
     const foundProperty = await this.databaseService.property.findUnique({
       where: { id: propertyId },
+      include: {
+        category: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
+        },
+        reservations: {
+          select: {
+            id: true,
+            startDate: true,
+            endDate: true,
+            totalPrice: true,
+            numberOfGuests: true,
+            user: {
+              select: {
+                id: true,
+                username: true,
+                email: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!foundProperty) {
@@ -109,6 +135,126 @@ export class PropertyService {
         category: {
           select: {
             name: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findManyPublic({
+    skip,
+    take,
+    categoryName,
+    propertyName,
+  }: {
+    skip?: number;
+    take?: number;
+    categoryName?: string;
+    propertyName?: string;
+  }) {
+    const where: any = {};
+
+    if (categoryName) {
+      where.category = {
+        name: categoryName,
+      };
+    }
+
+    if (propertyName) {
+      where.name = {
+        contains: propertyName,
+        mode: 'insensitive',
+      };
+    }
+
+    return this.databaseService.property.findMany({
+      where,
+      skip: skip || 0,
+      take: take || 10,
+      select: {
+        id: true,
+        name: true,
+        tagLine: true,
+        description: true,
+        price: true,
+        coverUrl: true,
+        guests: true,
+        bedrooms: true,
+        beds: true,
+        baths: true,
+        category: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findPublicById(propertyId: string) {
+    const property = await this.databaseService.property.findUnique({
+      where: { id: propertyId },
+      select: {
+        id: true,
+        name: true,
+        tagLine: true,
+        description: true,
+        price: true,
+        coverUrl: true,
+        guests: true,
+        bedrooms: true,
+        beds: true,
+        baths: true,
+        category: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+          },
+        },
+      },
+    });
+
+    if (!property) {
+      throw new NotFoundException(`Property id ${propertyId} not found`);
+    }
+
+    return property;
+  }
+
+  async findAllByCreatorIdWithFullDetails(creatorId: string) {
+    return this.databaseService.property.findMany({
+      where: {
+        creatorId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        category: true,
+        creator: {
+          select: {
+            id: true,
+            username: true,
+            email: true,
+          },
+        },
+        reservations: {
+          select: {
+            id: true,
+            startDate: true,
+            endDate: true,
+            totalPrice: true,
+            numberOfGuests: true,
+            user: {
+              select: {
+                id: true,
+                username: true,
+                email: true,
+              },
+            },
           },
         },
       },
