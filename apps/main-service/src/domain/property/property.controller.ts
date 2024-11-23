@@ -35,7 +35,7 @@ export class PropertyController {
     @Query('categoryName') categoryName?: string,
     @Query('propertyName') propertyName?: string,
   ) {
-    return this.propertyService.findMany({
+    return this.propertyService.findManyPublic({
       skip,
       take,
       categoryName,
@@ -60,11 +60,18 @@ export class PropertyController {
 
   @Get('my')
   getMyProperties(@UserReq() user: User) {
-    return this.propertyService.findAllByCreatorId(user.id);
+    return this.propertyService.findAllByCreatorIdWithFullDetails(user.id);
   }
 
+  @Public()
   @Get(':propertyId')
-  getById(@Param('propertyId') propertyId: string) {
+  getPublicPropertyById(@Param('propertyId') propertyId: string) {
+    return this.propertyService.findPublicById(propertyId);
+  }
+
+  @UseGuards(PropertyGuard)
+  @Get(':propertyId/full')
+  getFullPropertyById(@Param('propertyId') propertyId: string) {
     return this.propertyService.findOrFailById(propertyId);
   }
 }
