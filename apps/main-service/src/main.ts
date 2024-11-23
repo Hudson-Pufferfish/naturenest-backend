@@ -39,6 +39,7 @@ async function bootstrap() {
     .setTitle('NatureNest API')
     .setDescription('The NatureNest API documentation')
     .setVersion('1.0')
+    .addBearerAuth()
     .addTag('auth', 'Authentication endpoints for sign-in, register, etc.')
     .addTag('users', 'User management endpoints')
     .addTag('health', 'Health check endpoints')

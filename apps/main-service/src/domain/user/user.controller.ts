@@ -1,24 +1,68 @@
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Put } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { UserReq } from './../../common/decorator/user.decorator';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { Public } from '../../common/decorator/public.decorator';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBody,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
+@ApiTags('users')
 @Controller('/users')
 export class UserController {
   constructor(private userService: UserService) {}
-  @Post()
-  register(@Body() data: CreateUserDto) {
-    return this.userService.create(data);
-  }
 
+  @ApiOperation({ summary: 'Get current user information' })
+  @ApiBearerAuth()
+  @ApiResponse({
+    status: 200,
+    description: 'Returns the current user information',
+    schema: {
+      example: {
+        status: 200,
+        message: 'Success',
+        data: {
+          id: 'clg2h7qxc0000356uk8r9d5g1',
+          email: 'user@example.com',
+          username: 'johndoe',
+          firstName: 'John',
+          lastName: 'Doe',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get('/me')
   getMe(@UserReq() user: User) {
     return user;
   }
 
+  @ApiOperation({ summary: 'Reset user password' })
+  @ApiBody({ type: ResetPasswordDto })
+  @ApiResponse({
+    status: 200,
+    description: 'Password successfully reset',
+    schema: {
+      example: {
+        status: 200,
+        message: 'Success',
+        data: {
+          id: 'clg2h7qxc0000356uk8r9d5g1',
+          email: 'user@example.com',
+          username: 'johndoe',
+          firstName: 'John',
+          lastName: 'Doe',
+        },
+      },
+    },
+  })
+  @ApiResponse({ status: 400, description: 'Bad Request' })
+  @ApiResponse({ status: 404, description: 'User not found' })
   @Public()
   @Put('/reset-password')
   resetPassword(@Body() data: ResetPasswordDto) {
