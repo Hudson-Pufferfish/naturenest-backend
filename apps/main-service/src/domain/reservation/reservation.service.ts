@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  ForbiddenException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
@@ -122,7 +118,7 @@ export class ReservationService {
     });
   }
 
-  async deleteReservation(reservationId: string, userId: string) {
+  async deleteReservation(reservationId: string) {
     const reservation = await this.databaseService.reservation.findUnique({
       where: { id: reservationId },
     });

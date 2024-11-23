@@ -50,11 +50,8 @@ export class ReservationController {
   }
   // validation: currentDate  endDate
   @Delete(':reservationId')
-  deleteById(
-    @Param('reservationId') reservationId: string,
-    @UserReq() user: User,
-  ) {
-    return this.reservationService.deleteReservation(reservationId, user.id);
+  deleteReservation(@Param('reservationId') reservationId: string) {
+    return this.reservationService.deleteReservation(reservationId);
   }
 
   @Get(':reservationId')
