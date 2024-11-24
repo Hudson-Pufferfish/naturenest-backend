@@ -33,9 +33,6 @@ $ yarn install
 
 # generate prisma schema
 $ yarn migration:generate
-
-# if you need to install more dependencies
-$ yarn add <package> -W
 ```
 
 ## Running the app
@@ -64,6 +61,18 @@ $ yarn run test:e2e
 
 # test coverage
 $ yarn run test:cov
+```
+
+## Other Useful Commands
+
+```bash
+# generate a new application
+$ nest g app <service-name>
+# example:
+$ nest g app main-service
+
+# install new dependencies
+$ yarn add <package> -W
 ```
 
 ## Support
