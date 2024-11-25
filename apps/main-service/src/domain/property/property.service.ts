@@ -224,7 +224,11 @@ export class PropertyService {
     return property;
   }
 
-  async findAllByCreatorIdWithFullDetails(creatorId: string) {
+  async findAllByCreatorIdWithFullDetails(
+    creatorId: string,
+    skip?: number,
+    take?: number,
+  ) {
     return this.databaseService.property.findMany({
       where: {
         creatorId,
@@ -232,6 +236,8 @@ export class PropertyService {
       orderBy: {
         createdAt: 'desc',
       },
+      skip: skip || 0,
+      take: take || 10,
       include: {
         category: true,
         creator: {

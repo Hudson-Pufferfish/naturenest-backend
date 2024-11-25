@@ -199,6 +199,18 @@ export class PropertyController {
   }
 
   @ApiOperation({ summary: 'Get all properties owned by current user' })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+    description: 'Number of records to skip',
+  })
+  @ApiQuery({
+    name: 'take',
+    required: false,
+    type: Number,
+    description: 'Number of records to take',
+  })
   @ApiResponse({
     status: 200,
     description: 'Properties successfully retrieved',
@@ -242,8 +254,16 @@ export class PropertyController {
     description: 'Unauthorized - Invalid or missing token',
   })
   @Get('my')
-  getMyProperties(@UserReq() user: User) {
-    return this.propertyService.findAllByCreatorIdWithFullDetails(user.id);
+  getMyProperties(
+    @UserReq() user: User,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ) {
+    return this.propertyService.findAllByCreatorIdWithFullDetails(
+      user.id,
+      skip ? Number(skip) : undefined,
+      take ? Number(take) : undefined,
+    );
   }
 
   @ApiOperation({
