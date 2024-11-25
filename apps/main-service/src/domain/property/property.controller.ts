@@ -28,7 +28,7 @@ import {
 
 @ApiTags('properties')
 @ApiBearerAuth()
-@Controller('properties')
+@Controller({ path: '/properties', version: '1' })
 export class PropertyController {
   constructor(private propertyService: PropertyService) {}
 

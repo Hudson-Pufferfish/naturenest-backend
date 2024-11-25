@@ -27,7 +27,7 @@ import {
 
 @ApiTags('reservations')
 @ApiBearerAuth()
-@Controller('/reservations')
+@Controller({ path: '/reservations', version: '1' })
 @UseGuards(ReservationGuard)
 export class ReservationController {
   constructor(private reservationService: ReservationService) {}
