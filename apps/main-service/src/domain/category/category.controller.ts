@@ -1,4 +1,4 @@
-import { Controller, Get, ParseIntPipe, Query } from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import {
   ApiTags,
@@ -10,7 +10,7 @@ import {
 
 @ApiTags('categories')
 @ApiBearerAuth()
-@Controller('/categories')
+@Controller({ path: '/categories', version: '1' })
 export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 

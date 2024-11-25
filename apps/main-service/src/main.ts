@@ -4,6 +4,7 @@ import {
   BadRequestException,
   ValidationError,
   ValidationPipe,
+  VersioningType,
 } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
@@ -20,7 +21,21 @@ async function bootstrap() {
     credentials: true, // Allow credentials if necessary
   });
 
-  app.setGlobalPrefix('api');
+  // Enable versioning with backward compatibility
+  // This configuration ensures:
+  // 1. All routes are prefixed with /api/v1
+  // 2. Existing clients using /api/* will be automatically redirected to /api/v1/*
+  // 3. When v2 is needed in future:
+  //    - Create new controllers with @Controller({ version: '2' })
+  //    - Keep v1 controllers working for existing clients
+  //    - New clients can start using v2 endpoints
+  //    - Eventually deprecate v1 after all clients have migrated
+  app.enableVersioning({
+    type: VersioningType.URI,
+    defaultVersion: '1', // Makes /api/health redirect to /api/v1/health
+    prefix: 'api/v',
+  });
+
   // setup validation
   app.useGlobalPipes(
     new ValidationPipe({
@@ -35,7 +50,7 @@ async function bootstrap() {
   );
 
   // Swagger configuration with factory
-  const config = new DocumentBuilder()
+  const options = new DocumentBuilder()
     .setTitle('NatureNest API')
     .setDescription('The NatureNest API documentation')
     .setVersion('1.0')
@@ -47,8 +62,23 @@ async function bootstrap() {
     .addTag('reservations', 'Reservation management endpoints')
     .addTag('properties', 'Property management endpoints')
     .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('/api/docs', app, documentFactory);
+
+  // Create document with server configuration
+  // This ensures Swagger shows the correct versioned paths (/api/v1/*)
+  // When v2 is added, you can add another server configuration:
+  // servers: [
+  //   { url: '/api/v1', description: 'Version 1' },
+  //   { url: '/api/v2', description: 'Version 2' }
+  // ]
+  const v1Document = () =>
+    SwaggerModule.createDocument(app, {
+      ...options,
+      servers: [{ url: '/api/v1' }], // Define the base path for v1 endpoints
+    });
+
+  // Setup Swagger UI at /api/docs instead of /api/v1/docs
+  // Documentation itself isn't versioned - it just shows docs for all API versions
+  SwaggerModule.setup('api/docs', app, v1Document);
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
