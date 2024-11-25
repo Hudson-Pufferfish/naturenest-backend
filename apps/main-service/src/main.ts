@@ -64,16 +64,15 @@ async function bootstrap() {
     .build();
 
   // Create document with server configuration
-  // This ensures Swagger shows the correct versioned paths (/api/v1/*)
-  // When v2 is added, you can add another server configuration:
-  // servers: [
-  //   { url: '/api/v1', description: 'Version 1' },
-  //   { url: '/api/v2', description: 'Version 2' }
-  // ]
   const v1Document = () =>
     SwaggerModule.createDocument(app, {
       ...options,
-      servers: [{ url: '/api/v1' }], // Define the base path for v1 endpoints
+      servers: [
+        {
+          url: '/',
+          description: 'Current stable version (v1)',
+        },
+      ],
     });
 
   // Setup Swagger UI at /api/docs instead of /api/v1/docs
