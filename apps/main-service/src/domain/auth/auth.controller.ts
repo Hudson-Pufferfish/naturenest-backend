@@ -4,6 +4,7 @@ import { AuthService } from './auth.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('auth')
 @Controller({ path: '/auth', version: '1' })
@@ -33,6 +34,7 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Public()
   @Post('sign-in')
   signIn(@Body() data: SignInDto) {
@@ -62,6 +64,7 @@ export class AuthController {
     },
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Public()
   @Post('register')
   register(@Body() data: CreateUserDto) {
