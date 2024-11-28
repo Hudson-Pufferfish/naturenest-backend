@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run commitlint
+if ! yarn commitlint --edit $1; then
+  echo "\n❌ Invalid commit message format! \n"
+  echo "Valid formats examples:"
+  echo "✅ feat(user): add login functionality"
+  echo "✅ fix(auth): resolve token validation issue"
+  echo "✅ docs: update README installation steps"
+  echo "✅ style(ui): format authentication components"
+  echo "✅ refactor(api): simplify error handling"
+  echo "✅ test(auth): add unit tests for login"
+  echo "✅ chore: update dependencies"
+  echo "\nValid types: feat, fix, docs, style, refactor, test, chore, perf, revert, build, ci"
+  echo "\nFormat: type(optional-scope): description"
+  exit 1
+fi 
