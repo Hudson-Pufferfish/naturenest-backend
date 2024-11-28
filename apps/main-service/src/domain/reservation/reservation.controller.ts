@@ -24,6 +24,7 @@ import {
   ApiParam,
   ApiBody,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('reservations')
 @ApiBearerAuth()
@@ -120,6 +121,7 @@ export class ReservationController {
     description: 'Unauthorized - Invalid or missing token',
   })
   @ApiResponse({ status: 404, description: 'Not Found - Property not found' })
+  @Throttle({ default: { limit: 20, ttl: 60000 } })
   @Post()
   create(@UserReq() user: User, @Body() data: CreateReservationDto) {
     data.userId = user.id;
@@ -130,6 +132,7 @@ export class ReservationController {
   @ApiOperation({ summary: 'Update a reservation' })
   @ApiParam({ name: 'reservationId', type: String })
   @ApiBody({ type: UpdateReservationDto })
+  @Throttle({ default: { limit: 20, ttl: 60000 } })
   @Patch(':reservationId')
   updateById(
     @Param('reservationId') reservationId: string,

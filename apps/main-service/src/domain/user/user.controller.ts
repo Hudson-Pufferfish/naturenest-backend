@@ -11,6 +11,7 @@ import {
   ApiBody,
   ApiBearerAuth,
 } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
 
 @ApiTags('users')
 @Controller({ path: '/users', version: '1' })
@@ -63,6 +64,7 @@ export class UserController {
   })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   @ApiResponse({ status: 404, description: 'User not found' })
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Public()
   @Put('/reset-password')
   resetPassword(@Body() data: ResetPasswordDto) {
