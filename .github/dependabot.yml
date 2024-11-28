@@ -1,0 +1,38 @@
+version: 2
+updates:
+  # Configuration for npm/yarn
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'daily'
+      time: '09:00'
+      timezone: 'UTC'
+    auto-merge: true
+    ignore:
+      - dependency-name: '*'
+        update-types: ['version-update:semver-major']
+    versioning-strategy: increase
+    labels:
+      - 'dependencies'
+      - 'npm'
+    commit-message:
+      prefix: 'chore'
+      prefix-development: 'chore'
+      include: 'scope'
+    # Specify reviewers for pull requests
+    reviewers:
+      - 'Hudson-Pufferfish'
+    # Group dependencies updates
+    groups:
+      nestjs:
+        patterns:
+          - '@nestjs*'
+      typescript-eslint:
+        patterns:
+          - '@typescript-eslint*'
+    # Set the target branch
+    target-branch: 'main'
+    # Set the version requirements
+    allow:
+      # Allow both direct and indirect updates for all packages
+      - dependency-type: 'all'
