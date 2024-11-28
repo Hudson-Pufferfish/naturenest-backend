@@ -7,7 +7,7 @@ updates:
       interval: 'daily'
       time: '09:00'
       timezone: 'UTC'
-    auto-merge: true
+    open-pull-requests-limit: 10
     ignore:
       - dependency-name: '*'
         update-types: ['version-update:semver-major']
