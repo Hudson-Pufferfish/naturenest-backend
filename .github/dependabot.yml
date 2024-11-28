@@ -4,17 +4,13 @@ updates:
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
-      interval: 'daily'
+      interval: 'weekly'
       time: '09:00'
       timezone: 'UTC'
     open-pull-requests-limit: 10
-    ignore:
-      - dependency-name: '*'
-        update-types: ['version-update:semver-major']
     versioning-strategy: increase
     labels:
-      - 'dependencies'
-      - 'npm'
+      - 'enhancement'
     commit-message:
       prefix: 'chore'
       prefix-development: 'chore'
@@ -30,6 +26,28 @@ updates:
       typescript-eslint:
         patterns:
           - '@typescript-eslint*'
+      security:
+        patterns:
+          - 'bcrypt'
+          - '@prisma/client'
+          - 'prisma'
+      validation:
+        patterns:
+          - 'class-validator'
+          - 'class-transformer'
+    # Ignore less critical dependencies
+    ignore:
+      # Keep dev dependencies on their current major version
+      - dependency-name: '@types/*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'prettier'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint*'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'jest'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'ts-jest'
+        update-types: ['version-update:semver-major']
     # Set the target branch
     target-branch: 'main'
     # Set the version requirements
