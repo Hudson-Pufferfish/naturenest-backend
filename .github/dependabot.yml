@@ -10,7 +10,7 @@ updates:
     open-pull-requests-limit: 10
     versioning-strategy: increase
     labels:
-      - 'enhancement'
+      - 'dependencies'
     commit-message:
       prefix: 'chore'
       prefix-development: 'chore'
