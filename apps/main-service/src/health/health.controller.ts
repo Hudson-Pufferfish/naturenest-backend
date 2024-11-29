@@ -18,7 +18,7 @@ export class HealthController {
   })
   getHealth(): HealthResponseDto {
     return {
-      message: 'service is up and running',
+      message: 'service is up and running TEST',
     };
   }
 }
