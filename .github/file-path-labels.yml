@@ -40,14 +40,6 @@ security:
       - '**/auth/**/*'
       - '**/jwt/**/*'
 
-# Core infrastructure
-core:
-  - any:
-      - 'apps/main-service/src/main.ts'
-      - 'apps/*/src/app.module.ts'
-      - '**/interceptor/**/*'
-      - '**/decorator/**/*'
-
 # Configuration files
 config:
   - any:
@@ -91,7 +83,7 @@ test:
       - 'jest.config.js'
 
 # Documentation
-docs:
+documentation:
   - any:
       - '**/*.md'
       - '**/docs/**/*'
