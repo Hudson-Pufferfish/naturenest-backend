@@ -1,4 +1,4 @@
-name: 'PR Size Labeler'
+name: 'Pull Request size labeler'
 on:
   pull_request_target:
     types: [opened, synchronize]
@@ -10,7 +10,7 @@ jobs:
   size-label:
     runs-on: ubuntu-latest
     steps:
-      - uses: codelytv/pr-size-labeler@v1
+      - uses: CodelyTV/pr-size-labeler@v1.10.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           xs_label: 'size/XS'
