@@ -1,4 +1,3 @@
-import { IsArray } from 'class-validator';
 import {
   Injectable,
   NestInterceptor,

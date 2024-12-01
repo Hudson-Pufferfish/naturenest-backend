@@ -91,7 +91,7 @@ export class CreatePropertyDto {
 
   // TODO(@hudsonn) amenityIds
   // @IsNotEmpty()
-  // @IsArray()
+  // @IsArray() fromm class-validator
   // amenityIds: string[];
   // extract from token
   creatorId: string;
