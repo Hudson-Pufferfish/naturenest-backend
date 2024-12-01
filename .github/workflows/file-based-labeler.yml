@@ -17,5 +17,20 @@ jobs:
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
           sync-labels: true
-          configuration-path: .github/file-path-labels.yml
           dot: true
+          configuration-path: >
+            {
+              "auth": ["apps/main-service/src/domain/auth/**/*", "apps/**/auth.guard.ts", "**/jwt/**/*"],
+              "user": ["apps/main-service/src/domain/user/**/*"],
+              "property": ["apps/main-service/src/domain/property/**/*"],
+              "reservation": ["apps/main-service/src/domain/reservation/**/*"],
+              "category": ["apps/main-service/src/domain/category/**/*"],
+              "database": ["apps/**/prisma/**/*", "apps/**/database/**/*", "**/migration.sql", "**/schema.prisma"],
+              "api-docs": ["**/swagger/**/*", "**/*.dto.ts"],
+              "security": ["**/guard/**/*", "**/auth/**/*", "**/jwt/**/*"],
+              "config": ["**/*.env", "**/tsconfig*.json", ".eslintrc.js", ".prettierrc", "package.json", "yarn.lock", "commitlint.config.js", "lint-staged.config.js"],
+              "workflow": [".github/**/*", ".gitlab-ci.yml", ".husky/**/*", ".git/**/*", ".gitignore", ".gitattributes"],
+              "infrastructure": ["**/Dockerfile", "**/docker-compose*.yml", "**/.dockerignore", "**/kubernetes/**/*", "**/helm/**/*", "**/terraform/**/*", "**/nginx/**/*", "**/deploy/**/*"],
+              "test": ["**/*.spec.ts", "**/*.e2e-spec.ts", "**/test/**/*", "jest.config.js"],
+              "documentation": ["**/*.md", "**/docs/**/*", "**/README*"]
+            }
