@@ -78,7 +78,7 @@ test:
       - '**/test/**/*'
       - 'jest.config.js'
 # Documentation
-docs:
+documentation:
   - any:
       - '**/*.md'
       - '**/docs/**/*'
