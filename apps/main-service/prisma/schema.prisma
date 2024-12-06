@@ -28,17 +28,6 @@ model User {
   @@map("user")
 }
 
-model Country {
-  id          String    @id @default(cuid())
-  name        String    @db.VarChar(20)
-  code        String    @db.VarChar(3)
-  // properties  Property[]
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @updatedAt  @map("updated_at")
-
-  @@map("country")
-}
-
 model Category {
   id          String    @id @default(cuid())
   name        String    @db.VarChar(20)
@@ -66,8 +55,6 @@ model Property {
   tagLine     String    @db.VarChar(30) @map("tag_line")
   categoryId  String    @map("category_id")
   category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
-  // countryId   String    @map("country_id")
-  // country     Country   @relation(fields: [countryId], references: [id])
   description String    @db.Text
   coverUrl    String    @db.Text @map("cover_url")
   price       Float
@@ -75,14 +62,15 @@ model Property {
   bedrooms    Int
   beds        Int
   baths       Int
-  // amenities  Amenity[]
+  // amenities Amenity[]
+  countryCode String    @default("US") @db.VarChar(2) @map("country_code")
   creatorId   String    @map("creator_id")
   creator     User      @relation(fields: [creatorId], references: [id])
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt  @map("updated_at")
   reservations Reservation[]
-  totalNightsBooked Int?      @default(0)  // Nullable with default value
-  totalIncome       Float?     @default(0)  // Nullable with default value
+  totalNightsBooked Int?      @default(0)
+  totalIncome       Float?     @default(0)
 
   @@map("property")
 }

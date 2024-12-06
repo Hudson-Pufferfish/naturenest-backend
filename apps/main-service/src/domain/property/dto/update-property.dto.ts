@@ -1,4 +1,10 @@
-import { IsOptional, IsNumber, IsString, MaxLength } from 'class-validator';
+import {
+  IsOptional,
+  IsNumber,
+  IsString,
+  MaxLength,
+  Matches,
+} from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class UpdatePropertyDto {
@@ -83,6 +89,17 @@ export class UpdatePropertyDto {
   @IsOptional()
   @IsNumber()
   baths: number;
+
+  @ApiPropertyOptional({
+    example: 'US',
+    description: 'Two-letter country code (ISO 3166-1 alpha-2)',
+  })
+  @IsOptional()
+  @IsString()
+  @Matches(/^[A-Z]{2}$/, {
+    message: 'countryCode must be a valid two-letter ISO country code',
+  })
+  countryCode: string;
 
   creatorId: string;
 }
