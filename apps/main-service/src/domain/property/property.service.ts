@@ -21,6 +21,7 @@ export class PropertyService {
         baths: data.baths,
         categoryId: data.categoryId,
         creatorId: data.creatorId,
+        countryCode: data.countryCode,
       },
     });
   }
@@ -182,6 +183,7 @@ export class PropertyService {
         bedrooms: true,
         beds: true,
         baths: true,
+        countryCode: true,
         category: true,
         creator: {
           select: {
@@ -207,6 +209,7 @@ export class PropertyService {
         bedrooms: true,
         beds: true,
         baths: true,
+        countryCode: true,
         category: true,
         creator: {
           select: {

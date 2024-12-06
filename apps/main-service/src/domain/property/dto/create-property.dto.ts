@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  MaxLength,
+  Matches,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePropertyDto {
@@ -95,4 +101,15 @@ export class CreatePropertyDto {
   // amenityIds: string[];
   // extract from token
   creatorId: string;
+
+  @ApiProperty({
+    example: 'US',
+    description: 'Two-letter country code (ISO 3166-1 alpha-2)',
+  })
+  @IsNotEmpty()
+  @IsString()
+  @Matches(/^[A-Z]{2}$/, {
+    message: 'countryCode must be a valid two-letter ISO country code',
+  })
+  countryCode: string;
 }
