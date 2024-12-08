@@ -125,8 +125,20 @@ export class PropertyService {
     const foundProperty = await this.databaseService.property.findUnique({
       where: { id: propertyId },
       include: {
-        category: true,
-        amenities: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+        amenities: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -278,8 +290,20 @@ export class PropertyService {
         beds: true,
         baths: true,
         countryCode: true,
-        category: true,
-        amenities: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+        amenities: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -310,8 +334,20 @@ export class PropertyService {
         beds: true,
         baths: true,
         countryCode: true,
-        category: true,
-        amenities: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+        amenities: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -346,8 +382,20 @@ export class PropertyService {
       skip: skip || 0,
       take: take || 10,
       include: {
-        category: true,
-        amenities: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+        amenities: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
         creator: {
           select: {
             id: true,
