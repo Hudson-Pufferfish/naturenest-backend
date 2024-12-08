@@ -95,10 +95,7 @@ export class PropertyController {
             category: {
               id: 'cat123',
               name: 'cabin',
-            },
-            creator: {
-              id: 'user123',
-              username: 'johndoe',
+              description: 'A cozy cabin in nature',
             },
             amenities: [
               {
@@ -112,6 +109,10 @@ export class PropertyController {
                 description: 'Participate in harvesting seasonal crops',
               },
             ],
+            creator: {
+              id: 'user123',
+              username: 'johndoe',
+            },
           },
         ],
       },
@@ -334,10 +335,7 @@ export class PropertyController {
           category: {
             id: 'cat123',
             name: 'cabin',
-          },
-          creator: {
-            id: 'user123',
-            username: 'johndoe',
+            description: 'A cozy cabin in nature',
           },
           amenities: [
             {
@@ -351,6 +349,10 @@ export class PropertyController {
               description: 'Participate in harvesting seasonal crops',
             },
           ],
+          creator: {
+            id: 'user123',
+            username: 'johndoe',
+          },
         },
       },
     },
