@@ -71,6 +71,11 @@ $ nest g app <service-name>
 # example:
 $ nest g app main-service
 
+# generate a new module (navigate to module location first)
+$ cd apps/main-service/src/domain && nest g module <module-name>
+# example:
+$ cd apps/main-service/src/domain && nest g module amenity
+
 # install new dependencies
 $ yarn add <package> -W
 ```
