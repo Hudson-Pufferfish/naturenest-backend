@@ -189,12 +189,13 @@ export class PropertyService {
       };
     }
 
-    return this.databaseService.property.findMany({
+    const properties = await this.databaseService.property.findMany({
       where,
       skip: skip || 0,
       take: take || 10,
       include: {
         category: true,
+        amenities: true,
         creator: {
           select: {
             id: true,
@@ -204,10 +205,15 @@ export class PropertyService {
         },
       },
     });
+
+    return properties.map((property) => ({
+      ...property,
+      amenities: property.amenities || [],
+    }));
   }
 
   async findAllByCreatorId(creatorId: string) {
-    return this.databaseService.property.findMany({
+    const properties = await this.databaseService.property.findMany({
       where: {
         creatorId,
       },
@@ -220,8 +226,14 @@ export class PropertyService {
             name: true,
           },
         },
+        amenities: true,
       },
     });
+
+    return properties.map((property) => ({
+      ...property,
+      amenities: property.amenities || [],
+    }));
   }
 
   async findManyPublic({
