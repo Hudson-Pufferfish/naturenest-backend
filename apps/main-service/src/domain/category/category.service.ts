@@ -1,24 +1,33 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
+import { CATEGORIES } from './category.config';
+
 @Injectable()
 export class CategoryService implements OnModuleInit {
   constructor(private databaseService: DatabaseService) {}
+
   async onModuleInit() {
-    const categories = await this.databaseService.category.findMany();
-    if (categories.length > 0) return;
-    await this.databaseService.category.createMany({
-      data: [
-        { name: 'farmhouse', description: 'farmhouse' },
-        { name: 'cabin', description: 'cabin' },
-        { name: 'airstream', description: 'airstream' },
-        { name: 'tent', description: 'tent' },
-        { name: 'warehouse', description: 'warehouse' },
-        { name: 'yurt', description: 'yurt' },
-        { name: 'safari_tent', description: 'safari_tent' },
-        { name: 'converted_barn', description: 'converted_barn' },
-      ],
-    });
+    await this.syncCategories();
   }
+
+  async syncCategories() {
+    // Get existing categories
+    const existingCategories = await this.databaseService.category.findMany();
+    const existingNames = existingCategories.map((c) => c.name);
+
+    // Filter out categories that already exist
+    const categoriesToAdd = CATEGORIES.filter(
+      (cat) => !existingNames.includes(cat.name),
+    );
+
+    // Add only new categories
+    if (categoriesToAdd.length > 0) {
+      await this.databaseService.category.createMany({
+        data: categoriesToAdd,
+      });
+    }
+  }
+
   async findMany({ skip, take }: { skip: number; take: number }) {
     const categories = await this.databaseService.category.findMany({
       skip: skip || 0,
