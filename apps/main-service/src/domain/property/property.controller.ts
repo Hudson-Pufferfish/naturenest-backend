@@ -95,7 +95,20 @@ export class PropertyController {
             category: {
               id: 'cat123',
               name: 'cabin',
+              description: 'A cozy cabin in nature',
             },
+            amenities: [
+              {
+                id: 'amen123',
+                name: 'pig_feeding',
+                description: 'Experience feeding and caring for pigs',
+              },
+              {
+                id: 'amen124',
+                name: 'crop_harvesting',
+                description: 'Participate in harvesting seasonal crops',
+              },
+            ],
             creator: {
               id: 'user123',
               username: 'johndoe',
@@ -147,6 +160,18 @@ export class PropertyController {
           createdAt: '2024-01-01T00:00:00.000Z',
           updatedAt: '2024-01-01T00:00:00.000Z',
           countryCode: 'US',
+          amenities: [
+            {
+              id: 'amen123',
+              name: 'pig_feeding',
+              description: 'Experience feeding and caring for pigs',
+            },
+            {
+              id: 'amen124',
+              name: 'crop_harvesting',
+              description: 'Participate in harvesting seasonal crops',
+            },
+          ],
         },
       },
     },
@@ -248,6 +273,18 @@ export class PropertyController {
               },
             ],
             countryCode: 'US',
+            amenities: [
+              {
+                id: 'amen123',
+                name: 'pig_feeding',
+                description: 'Experience feeding and caring for pigs',
+              },
+              {
+                id: 'amen124',
+                name: 'crop_harvesting',
+                description: 'Participate in harvesting seasonal crops',
+              },
+            ],
           },
         ],
       },
@@ -298,7 +335,20 @@ export class PropertyController {
           category: {
             id: 'cat123',
             name: 'cabin',
+            description: 'A cozy cabin in nature',
           },
+          amenities: [
+            {
+              id: 'amen123',
+              name: 'pig_feeding',
+              description: 'Experience feeding and caring for pigs',
+            },
+            {
+              id: 'amen124',
+              name: 'crop_harvesting',
+              description: 'Participate in harvesting seasonal crops',
+            },
+          ],
           creator: {
             id: 'user123',
             username: 'johndoe',
@@ -361,6 +411,18 @@ export class PropertyController {
             },
           ],
           countryCode: 'US',
+          amenities: [
+            {
+              id: 'amen123',
+              name: 'pig_feeding',
+              description: 'Experience feeding and caring for pigs',
+            },
+            {
+              id: 'amen124',
+              name: 'crop_harvesting',
+              description: 'Participate in harvesting seasonal crops',
+            },
+          ],
         },
       },
     },

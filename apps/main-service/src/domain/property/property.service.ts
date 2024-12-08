@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
@@ -7,8 +11,37 @@ import { UpdatePropertyDto } from './dto/update-property.dto';
 export class PropertyService {
   constructor(private databaseService: DatabaseService) {}
 
-  create(data: CreatePropertyDto) {
-    return this.databaseService.property.create({
+  async create(data: CreatePropertyDto) {
+    // Validate category exists
+    const category = await this.databaseService.category.findUnique({
+      where: { id: data.categoryId },
+    });
+    if (!category) {
+      throw new BadRequestException(`Category id ${data.categoryId} not found`);
+    }
+
+    // Validate amenities exist if provided
+    if (data.amenityIds?.length) {
+      const amenities = await this.databaseService.amenity.findMany({
+        where: {
+          id: {
+            in: data.amenityIds,
+          },
+        },
+      });
+
+      if (amenities.length !== data.amenityIds.length) {
+        const foundIds = amenities.map((a) => a.id);
+        const notFoundIds = data.amenityIds.filter(
+          (id) => !foundIds.includes(id),
+        );
+        throw new BadRequestException(
+          `Amenities not found: ${notFoundIds.join(', ')}`,
+        );
+      }
+    }
+
+    return await this.databaseService.property.create({
       data: {
         name: data.name,
         tagLine: data.tagLine,
@@ -22,6 +55,11 @@ export class PropertyService {
         categoryId: data.categoryId,
         creatorId: data.creatorId,
         countryCode: data.countryCode,
+        ...(data.amenityIds && {
+          amenities: {
+            connect: data.amenityIds.map((id) => ({ id })),
+          },
+        }),
       },
     });
   }
@@ -29,9 +67,49 @@ export class PropertyService {
   async updateOrFailById(propertyId: string, data: UpdatePropertyDto) {
     await this.findOrFailById(propertyId);
 
+    // Validate category exists if updating category
+    if (data.categoryId) {
+      const category = await this.databaseService.category.findUnique({
+        where: { id: data.categoryId },
+      });
+      if (!category) {
+        throw new BadRequestException(
+          `Category id ${data.categoryId} not found`,
+        );
+      }
+    }
+
+    // Validate amenities exist if updating amenities
+    if (data.amenityIds?.length) {
+      const amenities = await this.databaseService.amenity.findMany({
+        where: {
+          id: {
+            in: data.amenityIds,
+          },
+        },
+      });
+
+      if (amenities.length !== data.amenityIds.length) {
+        const foundIds = amenities.map((a) => a.id);
+        const notFoundIds = data.amenityIds.filter(
+          (id) => !foundIds.includes(id),
+        );
+        throw new BadRequestException(
+          `Amenities not found: ${notFoundIds.join(', ')}`,
+        );
+      }
+    }
+
     return this.databaseService.property.update({
       where: { id: propertyId },
-      data,
+      data: {
+        ...data,
+        ...(data.amenityIds && {
+          amenities: {
+            set: data.amenityIds.map((id) => ({ id })),
+          },
+        }),
+      },
     });
   }
 
@@ -47,7 +125,20 @@ export class PropertyService {
     const foundProperty = await this.databaseService.property.findUnique({
       where: { id: propertyId },
       include: {
-        category: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+        amenities: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -78,7 +169,10 @@ export class PropertyService {
       throw new NotFoundException(`Property id ${propertyId} not found`);
     }
 
-    return foundProperty;
+    return {
+      ...foundProperty,
+      amenities: foundProperty.amenities || [],
+    };
   }
 
   async findMany({
@@ -107,12 +201,13 @@ export class PropertyService {
       };
     }
 
-    return this.databaseService.property.findMany({
+    const properties = await this.databaseService.property.findMany({
       where,
       skip: skip || 0,
       take: take || 10,
       include: {
         category: true,
+        amenities: true,
         creator: {
           select: {
             id: true,
@@ -122,10 +217,15 @@ export class PropertyService {
         },
       },
     });
+
+    return properties.map((property) => ({
+      ...property,
+      amenities: property.amenities || [],
+    }));
   }
 
   async findAllByCreatorId(creatorId: string) {
-    return this.databaseService.property.findMany({
+    const properties = await this.databaseService.property.findMany({
       where: {
         creatorId,
       },
@@ -138,8 +238,14 @@ export class PropertyService {
             name: true,
           },
         },
+        amenities: true,
       },
     });
+
+    return properties.map((property) => ({
+      ...property,
+      amenities: property.amenities || [],
+    }));
   }
 
   async findManyPublic({
@@ -168,7 +274,7 @@ export class PropertyService {
       };
     }
 
-    return this.databaseService.property.findMany({
+    const properties = await this.databaseService.property.findMany({
       where,
       skip: skip || 0,
       take: take || 10,
@@ -184,7 +290,20 @@ export class PropertyService {
         beds: true,
         baths: true,
         countryCode: true,
-        category: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+        amenities: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -193,6 +312,11 @@ export class PropertyService {
         },
       },
     });
+
+    return properties.map((property) => ({
+      ...property,
+      amenities: property.amenities || [],
+    }));
   }
 
   async findPublicById(propertyId: string) {
@@ -210,7 +334,20 @@ export class PropertyService {
         beds: true,
         baths: true,
         countryCode: true,
-        category: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+        amenities: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -224,7 +361,10 @@ export class PropertyService {
       throw new NotFoundException(`Property id ${propertyId} not found`);
     }
 
-    return property;
+    return {
+      ...property,
+      amenities: property.amenities || [],
+    };
   }
 
   async findAllByCreatorIdWithFullDetails(
@@ -232,7 +372,7 @@ export class PropertyService {
     skip?: number,
     take?: number,
   ) {
-    return this.databaseService.property.findMany({
+    const properties = await this.databaseService.property.findMany({
       where: {
         creatorId,
       },
@@ -242,7 +382,20 @@ export class PropertyService {
       skip: skip || 0,
       take: take || 10,
       include: {
-        category: true,
+        category: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
+        amenities: {
+          select: {
+            id: true,
+            name: true,
+            description: true,
+          },
+        },
         creator: {
           select: {
             id: true,
@@ -268,5 +421,10 @@ export class PropertyService {
         },
       },
     });
+
+    return properties.map((property) => ({
+      ...property,
+      amenities: property.amenities || [],
+    }));
   }
 }
