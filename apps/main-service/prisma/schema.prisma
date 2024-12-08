@@ -42,7 +42,8 @@ model Category {
 model Amenity {
   id          String    @id @default(cuid())
   name        String    @db.VarChar(20)
-  // properties  Property[]
+  description String    @db.Text
+  properties  Property[]  @relation("PropertyToAmenity")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @updatedAt  @map("updated_at")
 
@@ -62,7 +63,7 @@ model Property {
   bedrooms    Int
   beds        Int
   baths       Int
-  // amenities Amenity[]
+  amenities   Amenity[]  @relation("PropertyToAmenity")
   countryCode String    @default("US") @db.VarChar(2) @map("country_code")
   creatorId   String    @map("creator_id")
   creator     User      @relation(fields: [creatorId], references: [id])

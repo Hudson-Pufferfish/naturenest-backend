@@ -22,6 +22,11 @@ export class PropertyService {
         categoryId: data.categoryId,
         creatorId: data.creatorId,
         countryCode: data.countryCode,
+        ...(data.amenityIds && {
+          amenities: {
+            connect: data.amenityIds.map((id) => ({ id })),
+          },
+        }),
       },
     });
   }
@@ -31,7 +36,14 @@ export class PropertyService {
 
     return this.databaseService.property.update({
       where: { id: propertyId },
-      data,
+      data: {
+        ...data,
+        ...(data.amenityIds && {
+          amenities: {
+            set: data.amenityIds.map((id) => ({ id })),
+          },
+        }),
+      },
     });
   }
 
@@ -48,6 +60,7 @@ export class PropertyService {
       where: { id: propertyId },
       include: {
         category: true,
+        amenities: true,
         creator: {
           select: {
             id: true,
@@ -78,7 +91,10 @@ export class PropertyService {
       throw new NotFoundException(`Property id ${propertyId} not found`);
     }
 
-    return foundProperty;
+    return {
+      ...foundProperty,
+      amenities: foundProperty.amenities || [],
+    };
   }
 
   async findMany({
@@ -168,7 +184,7 @@ export class PropertyService {
       };
     }
 
-    return this.databaseService.property.findMany({
+    const properties = await this.databaseService.property.findMany({
       where,
       skip: skip || 0,
       take: take || 10,
@@ -185,6 +201,7 @@ export class PropertyService {
         baths: true,
         countryCode: true,
         category: true,
+        amenities: true,
         creator: {
           select: {
             id: true,
@@ -193,6 +210,11 @@ export class PropertyService {
         },
       },
     });
+
+    return properties.map((property) => ({
+      ...property,
+      amenities: property.amenities || [],
+    }));
   }
 
   async findPublicById(propertyId: string) {
@@ -211,6 +233,7 @@ export class PropertyService {
         baths: true,
         countryCode: true,
         category: true,
+        amenities: true,
         creator: {
           select: {
             id: true,
@@ -224,7 +247,10 @@ export class PropertyService {
       throw new NotFoundException(`Property id ${propertyId} not found`);
     }
 
-    return property;
+    return {
+      ...property,
+      amenities: property.amenities || [],
+    };
   }
 
   async findAllByCreatorIdWithFullDetails(
@@ -232,7 +258,7 @@ export class PropertyService {
     skip?: number,
     take?: number,
   ) {
-    return this.databaseService.property.findMany({
+    const properties = await this.databaseService.property.findMany({
       where: {
         creatorId,
       },
@@ -243,6 +269,7 @@ export class PropertyService {
       take: take || 10,
       include: {
         category: true,
+        amenities: true,
         creator: {
           select: {
             id: true,
@@ -268,5 +295,10 @@ export class PropertyService {
         },
       },
     });
+
+    return properties.map((property) => ({
+      ...property,
+      amenities: property.amenities || [],
+    }));
   }
 }

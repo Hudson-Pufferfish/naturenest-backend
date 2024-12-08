@@ -8,4 +8,4 @@
 ALTER TABLE "property" ADD COLUMN     "country_code" VARCHAR(2) NOT NULL DEFAULT 'US';
 
 -- DropTable
-DROP TABLE IF EXISTS "country";
+DROP TABLE "country";

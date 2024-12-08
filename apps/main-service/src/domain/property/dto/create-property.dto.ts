@@ -4,6 +4,8 @@ import {
   IsString,
   MaxLength,
   Matches,
+  IsArray,
+  IsOptional,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -95,10 +97,17 @@ export class CreatePropertyDto {
   @IsNumber()
   baths: number;
 
-  // TODO(@hudsonn) amenityIds
-  // @IsNotEmpty()
-  // @IsArray() fromm class-validator
-  // amenityIds: string[];
+  @ApiProperty({
+    example: ['clg2h7qxc0000356uk8r9d5g1', 'clg2h7qxc0000356uk8r9d5g2'],
+    description: 'Array of amenity IDs',
+    isArray: true,
+    required: false,
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  amenityIds?: string[];
+
   // extract from token
   creatorId: string;
 

@@ -4,6 +4,7 @@ import {
   IsString,
   MaxLength,
   Matches,
+  IsArray,
 } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -100,6 +101,16 @@ export class UpdatePropertyDto {
     message: 'countryCode must be a valid two-letter ISO country code',
   })
   countryCode: string;
+
+  @ApiPropertyOptional({
+    example: ['clg2h7qxc0000356uk8r9d5g1', 'clg2h7qxc0000356uk8r9d5g2'],
+    description: 'Array of amenity IDs',
+    isArray: true,
+  })
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  amenityIds?: string[];
 
   creatorId: string;
 }
