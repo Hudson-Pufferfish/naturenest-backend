@@ -1,19 +1,14 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { AmenityService } from './amenity.service';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiQuery,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { Public } from '../../common/decorator/public.decorator';
 
 @ApiTags('amenities')
-@ApiBearerAuth()
 @Controller({ path: '/amenities', version: '1' })
 export class AmenityController {
   constructor(private amenityService: AmenityService) {}
 
+  @Public()
   @ApiOperation({ summary: 'Get all amenities with pagination' })
   @ApiQuery({
     name: 'skip',
