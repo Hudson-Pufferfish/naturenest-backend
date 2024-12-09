@@ -1,19 +1,14 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { CategoryService } from './category.service';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiQuery,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from '@nestjs/swagger';
+import { Public } from '../../common/decorator/public.decorator';
 
 @ApiTags('categories')
-@ApiBearerAuth()
 @Controller({ path: '/categories', version: '1' })
 export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
+  @Public()
   @ApiOperation({ summary: 'Get all categories with pagination' })
   @ApiQuery({
     name: 'skip',
@@ -55,7 +50,6 @@ export class CategoryController {
       },
     },
   })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
   @Get()
   find(@Query('skip') skip?: string, @Query('take') take?: string) {
     const parsedSkip = skip ? parseInt(skip) : 0;
