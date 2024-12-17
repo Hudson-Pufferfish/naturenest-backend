@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationDto } from './dto/update-reservation.dto';
@@ -16,6 +20,14 @@ export class ReservationService {
     const property = await this.propertyService.findByIdWithFullDetails(
       data.propertyId,
     );
+
+    // Validate number of guests
+    if (data.numberOfGuests > property.guests) {
+      throw new BadRequestException(
+        `Number of guests (${data.numberOfGuests}) exceeds property capacity (${property.guests})`,
+      );
+    }
+
     const date1 = dayjs(data.startDate);
     const date2 = dayjs(data.endDate);
     const numberOfBookingDays = date2.diff(date1, 'day');
@@ -105,6 +117,16 @@ export class ReservationService {
 
     if (!existingReservation) {
       throw new NotFoundException('Reservation not found');
+    }
+
+    // Validate number of guests if being updated
+    if (
+      data.numberOfGuests &&
+      data.numberOfGuests > existingReservation.property.guests
+    ) {
+      throw new BadRequestException(
+        `Number of guests (${data.numberOfGuests}) exceeds property capacity (${existingReservation.property.guests})`,
+      );
     }
 
     const date1 = dayjs(data.startDate || existingReservation.startDate);
