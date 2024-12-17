@@ -361,7 +361,7 @@ export class PropertyController {
   @Public()
   @Get(':propertyId')
   getPublicPropertyById(@Param('propertyId') propertyId: string) {
-    return this.propertyService.findPublicById(propertyId);
+    return this.propertyService.findByIdPublic(propertyId);
   }
 
   @ApiOperation({ summary: 'Get full property details (owner only)' })
@@ -439,6 +439,6 @@ export class PropertyController {
   @UseGuards(PropertyGuard)
   @Get(':propertyId/full')
   getFullPropertyById(@Param('propertyId') propertyId: string) {
-    return this.propertyService.findOrFailById(propertyId);
+    return this.propertyService.findByIdWithFullDetails(propertyId);
   }
 }

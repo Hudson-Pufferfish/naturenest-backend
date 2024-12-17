@@ -25,7 +25,9 @@ export class PropertyGuard implements CanActivate {
     if (propertyId) {
       let property;
       try {
-        property = await this.propertyService.findOrFailById(propertyId);
+        property = await this.propertyService.findByIdWithFullDetails(
+          propertyId,
+        );
       } catch (error) {
         if (error instanceof NotFoundException) {
           throw new NotFoundException(`Property id ${propertyId} not found`);
