@@ -160,4 +160,76 @@ export class ReservationController {
   findById(@Param('reservationId') reservationId: string) {
     return this.reservationService.findById(reservationId);
   }
+
+  @ApiOperation({
+    summary: 'Get all reservations for the current user',
+    description:
+      "Returns paginated list of user's reservations ordered by creation date (newest first)",
+  })
+  @ApiQuery({
+    name: 'skip',
+    required: false,
+    type: Number,
+    description: 'Number of items to skip for pagination',
+  })
+  @ApiQuery({
+    name: 'take',
+    required: false,
+    type: Number,
+    description: 'Number of items to take (page size)',
+    minimum: 1,
+    maximum: 50,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Reservations successfully retrieved',
+    schema: {
+      example: {
+        status: 200,
+        message: 'Success',
+        data: [
+          {
+            id: 'res123',
+            startDate: '2024-03-15',
+            endDate: '2024-03-20',
+            totalPrice: 750.0,
+            numberOfGuests: 2,
+            createdAt: '2024-03-01T12:00:00Z',
+            property: {
+              name: 'Cozy Mountain Cabin',
+              price: 150.0,
+              coverUrl: 'https://example.com/image.jpg',
+              creator: {
+                id: 'user123',
+                username: 'johndoe',
+                email: 'john@example.com',
+              },
+            },
+            user: {
+              id: 'user456',
+              username: 'janedoe',
+              email: 'jane@example.com',
+            },
+          },
+        ],
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - Invalid or missing token',
+  })
+  @Get('my')
+  getMyReservations(
+    @UserReq() user: User,
+    @Query('skip') skip?: number,
+    @Query('take') take?: number,
+  ) {
+    return this.reservationService.findAll(
+      undefined,
+      user.id,
+      skip ? Number(skip) : undefined,
+      take ? Number(take) : undefined,
+    );
+  }
 }
