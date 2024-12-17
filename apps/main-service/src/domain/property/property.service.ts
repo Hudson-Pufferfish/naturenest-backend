@@ -80,14 +80,10 @@ export class PropertyService {
       }
     }
 
-    // Validate amenities exist if updating amenities
+    // Validate amenities if updating
     if (data.amenityIds?.length) {
       const amenities = await this.databaseService.amenity.findMany({
-        where: {
-          id: {
-            in: data.amenityIds,
-          },
-        },
+        where: { id: { in: data.amenityIds } },
       });
 
       if (amenities.length !== data.amenityIds.length) {
@@ -101,15 +97,21 @@ export class PropertyService {
       }
     }
 
+    // Separate amenityIds from other data
+    const { amenityIds, ...propertyData } = data;
+
     return this.databaseService.property.update({
       where: { id: propertyId },
       data: {
-        ...data,
-        ...(data.amenityIds && {
-          amenities: {
-            set: data.amenityIds.map((id) => ({ id })),
-          },
-        }),
+        ...propertyData,
+        amenities: amenityIds
+          ? {
+              set: amenityIds.map((id) => ({ id })),
+            }
+          : undefined,
+      },
+      include: {
+        amenities: true, // Include updated amenities in response
       },
     });
   }
