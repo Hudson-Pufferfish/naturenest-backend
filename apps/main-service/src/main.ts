@@ -15,6 +15,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [
       'http://localhost:3000', // Local development
+      'https://naturenest-dev.vercel.app', // Future deployed frontend
       'https://naturenest-dev.netlify.app', // Future deployed frontend
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed HTTP methods
