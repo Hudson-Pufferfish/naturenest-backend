@@ -6,6 +6,7 @@ import {
 import { DatabaseService } from '../../database/database.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
+import dayjs from 'dayjs';
 
 @Injectable()
 export class PropertyService {
@@ -122,7 +123,7 @@ export class PropertyService {
   }
 
   async findOrFailById(propertyId: string) {
-    const foundProperty = await this.databaseService.property.findUnique({
+    const property = await this.databaseService.property.findUnique({
       where: { id: propertyId },
       include: {
         category: {
@@ -165,13 +166,32 @@ export class PropertyService {
       },
     });
 
-    if (!foundProperty) {
+    if (!property) {
       throw new NotFoundException(`Property id ${propertyId} not found`);
     }
 
+    // Calculate stats from completed reservations
+    const currentDate = dayjs().format('YYYY-MM-DD');
+    const completedReservations = property.reservations.filter(
+      (res) => res.endDate <= currentDate,
+    );
+
+    const totalNightsBooked = completedReservations.reduce((total, res) => {
+      const start = dayjs(res.startDate);
+      const end = dayjs(res.endDate);
+      return total + end.diff(start, 'day');
+    }, 0);
+
+    const totalIncome = completedReservations.reduce(
+      (total, res) => total + res.totalPrice,
+      0,
+    );
+
     return {
-      ...foundProperty,
-      amenities: foundProperty.amenities || [],
+      ...property,
+      totalNightsBooked,
+      totalIncome,
+      amenities: property.amenities || [],
     };
   }
 
@@ -372,6 +392,7 @@ export class PropertyService {
     skip?: number,
     take?: number,
   ) {
+    // First get all property IDs
     const properties = await this.databaseService.property.findMany({
       where: {
         creatorId,
@@ -381,50 +402,16 @@ export class PropertyService {
       },
       skip: skip || 0,
       take: take || 10,
-      include: {
-        category: {
-          select: {
-            id: true,
-            name: true,
-            description: true,
-          },
-        },
-        amenities: {
-          select: {
-            id: true,
-            name: true,
-            description: true,
-          },
-        },
-        creator: {
-          select: {
-            id: true,
-            username: true,
-            email: true,
-          },
-        },
-        reservations: {
-          select: {
-            id: true,
-            startDate: true,
-            endDate: true,
-            totalPrice: true,
-            numberOfGuests: true,
-            user: {
-              select: {
-                id: true,
-                username: true,
-                email: true,
-              },
-            },
-          },
-        },
+      select: {
+        id: true,
       },
     });
 
-    return properties.map((property) => ({
-      ...property,
-      amenities: property.amenities || [],
-    }));
+    // Then use findOrFailById for each property to get full details with stats
+    const propertiesWithDetails = await Promise.all(
+      properties.map((prop) => this.findOrFailById(prop.id)),
+    );
+
+    return propertiesWithDetails;
   }
 }
