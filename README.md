@@ -63,6 +63,114 @@ $ yarn run test:e2e
 $ yarn run test:cov
 ```
 
+## Data Flow Layers
+
+The backend implements several layers to handle data flow from frontend to backend:
+
+### 1. DTOs (Data Transfer Objects)
+
+- Located in `*.dto.ts` files
+- Define the shape of data being transferred
+- Include validation rules using class-validator decorators
+- Examples:
+  - Request DTOs: `CreatePropertyDto`, `UpdateUserDto`
+  - Response DTOs: `PropertyResponseDto`, `UserResponseDto`
+
+### 2. Guards
+
+- Located in `*.guard.ts` files
+- Protect routes and handle authentication/authorization
+- Examples:
+  - `JwtAuthGuard`: Validates JWT tokens
+  - `RolesGuard`: Checks user roles and permissions
+
+### 3. Interceptors
+
+- Located in `*.interceptor.ts` files
+- Transform data before/after request handling
+- Examples:
+  - `TransformInterceptor`: Formats response data
+  - `LoggingInterceptor`: Logs request/response data
+
+### 4. Pipes (Optional)
+
+- Located in `*.pipe.ts` files
+- Transform and validate input data at the parameter level
+- Execute just before a method is invoked
+- Can transform primitive values (like converting string to number)
+- Examples:
+  - `ValidationPipe`: Validates incoming DTOs against their class-validator decorators
+  - `ParseIntPipe`: Converts string parameters to integers
+  - `ParseBoolPipe`: Converts string parameters to booleans
+
+#### DTOs vs Pipes: Key Differences
+
+1. **Purpose**:
+
+   - DTOs: Define data structure and validation rules for entire request/response bodies
+   - Pipes: Transform or validate individual parameters and apply transformations
+
+2. **Scope**:
+
+   - DTOs: Handle complete objects/request bodies
+   - Pipes: Work on individual parameters or method arguments
+
+3. **Timing**:
+
+   - DTOs: Validated during request body processing
+   - Pipes: Execute just before method execution
+
+4. **Example Usage**:
+
+   ```typescript
+   // DTO Example - Handles complete object
+   class CreateUserDto {
+     @IsString()
+     name: string;
+
+     @IsEmail()
+     email: string;
+   }
+
+   // Pipe Example - Transforms single parameter
+   @Get(':id')
+   findOne(@Param('id', ParseIntPipe) id: number) {
+     // id is guaranteed to be a number
+   }
+   ```
+
+### 5. Controllers
+
+- Located in `*.controller.ts` files
+- Handle HTTP requests
+- Use decorators to define routes and HTTP methods
+- Apply guards, interceptors, and pipes
+
+### 6. Services
+
+- Located in `*.service.ts` files
+- Contain business logic
+- Interact with the database through Prisma
+- Handle data processing and validation
+
+### 7. Entities/Models
+
+- Defined in `prisma/schema.prisma`
+- Represent database structure
+- Map to database tables
+
+### Data Flow Example
+
+1. Frontend sends HTTP request with data
+2. Guards check authentication/authorization
+3. DTOs validate incoming data
+4. Pipes transform data if needed
+5. Controllers receive the request
+6. Services process the business logic
+7. Prisma handles database operations
+8. Response flows back through interceptors
+9. Formatted data returns to frontend
+
 ## Other Useful Commands
 
 ```bash
