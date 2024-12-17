@@ -93,3 +93,51 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Testing
+
+### Unit Tests
+
+```bash
+# run all tests
+$ yarn test
+
+# run tests in watch mode
+$ yarn test:watch
+
+# run tests with coverage
+$ yarn test:cov
+
+# run specific test file
+$ yarn test path/to/file.spec.ts
+# example:
+$ yarn test apps/main-service/src/domain/property/property.service.spec.ts
+```
+
+### Important Notes
+
+- Tests use mock database, so they won't affect your development/production database
+- Tests are located next to the files they test (e.g., `service.ts` -> `service.spec.ts`)
+- Use `jest.config.js` for test configuration
+- Coverage reports are generated in the `./coverage` directory
+
+### Writing Tests
+
+Basic test structure:
+
+```typescript
+describe('ServiceName', () => {
+  let service: ServiceName;
+  let mockContext: MockContext;
+
+  beforeEach(async () => {
+    const { module, mockContext: mc } = await createTestingModule([
+      ServiceName,
+    ]);
+    service = module.get<ServiceName>(ServiceName);
+    mockContext = mc;
+  });
+
+  // Your test cases here
+});
+```
