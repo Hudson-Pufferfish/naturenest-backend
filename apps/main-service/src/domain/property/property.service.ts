@@ -7,6 +7,7 @@ import { DatabaseService } from '../../database/database.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import dayjs from 'dayjs';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class PropertyService {
@@ -68,6 +69,13 @@ export class PropertyService {
   async updateOrFailById(propertyId: string, data: UpdatePropertyDto) {
     await this.findByIdWithFullDetails(propertyId);
 
+    // Add validation for name length
+    if (data.name && data.name.length > 20) {
+      throw new BadRequestException(
+        'Property name must not exceed 20 characters',
+      );
+    }
+
     // Validate category exists if updating category
     if (data.categoryId) {
       const category = await this.databaseService.category.findUnique({
@@ -100,20 +108,41 @@ export class PropertyService {
     // Separate amenityIds from other data
     const { amenityIds, ...propertyData } = data;
 
-    return this.databaseService.property.update({
-      where: { id: propertyId },
-      data: {
-        ...propertyData,
-        amenities: amenityIds
-          ? {
-              set: amenityIds.map((id) => ({ id })),
-            }
-          : undefined,
-      },
-      include: {
-        amenities: true, // Include updated amenities in response
-      },
-    });
+    try {
+      return await this.databaseService.property.update({
+        where: { id: propertyId },
+        data: {
+          ...propertyData,
+          amenities: amenityIds
+            ? {
+                set: amenityIds.map((id) => ({ id })),
+              }
+            : undefined,
+        },
+        include: {
+          amenities: true,
+          reservations: {
+            select: {
+              id: true,
+              startDate: true,
+              endDate: true,
+            },
+          },
+        },
+      });
+    } catch (error) {
+      if (error instanceof Prisma.PrismaClientKnownRequestError) {
+        if (error.message.includes('too long for the column')) {
+          throw new BadRequestException(
+            'Property name must not exceed 20 characters',
+          );
+        }
+        throw new BadRequestException(
+          `Failed to update property: ${error.message}`,
+        );
+      }
+      throw error;
+    }
   }
 
   async deleteOrFailById(propertyId: string) {
