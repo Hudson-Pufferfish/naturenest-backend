@@ -24,31 +24,138 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+NatureNest Backend is a NestJS-based application that provides the server-side functionality for the NatureNest platform. This backend handles property listings, user management, reservations, and more.
 
-## Installation
+### Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- Node.js (v16 or higher)
+- Yarn package manager
+- PostgreSQL (v14 or higher)
+- Git
+
+### Tech Stack
+
+- NestJS - Backend framework
+- Prisma - ORM and database toolkit
+- PostgreSQL - Database
+- Jest - Testing framework
+- TypeScript - Programming language
+
+## Getting Started
+
+### 1. Clone the Repository
 
 ```bash
-$ yarn install
-
-# generate prisma schema
-$ yarn migration:generate
+git clone https://github.com/your-repo/naturenest-backend.git
+cd naturenest-backend
 ```
 
-## Running the app
+### 2. Environment Setup
 
 ```bash
-# development
+# Copy the example environment file
+cp .env.example .env
+
+# Update the .env file with your local settings:
+# - DATABASE_URL=postgresql://username:password@localhost:5432/naturenest
+# - JWT_SECRET=your-secret-key
+# - Other required environment variables
+```
+
+### 3. Installation
+
+```bash
+# Install dependencies
+$ yarn install
+
+# Set up Prisma with database (Development)
+$ yarn prisma migrate dev
+# This command will:
+# 1. Create a new migration
+# 2. Apply the migration to the database
+# 3. Generate Prisma Client
+# 4. Trigger generators (e.g., Prisma Client)
+
+# For production use:
+$ yarn prisma migrate deploy
+```
+
+### 4. Database Setup
+
+```bash
+# Create a new database (if not exists)
+$ createdb naturenest
+
+# Development: Create and apply migrations + generate client
+$ yarn prisma migrate dev
+
+# When you modify schema.prisma:
+$ yarn prisma migrate dev --name describe_your_change
+# Example:
+$ yarn prisma migrate dev --name add_user_profile
+
+# View database in Prisma Studio
+$ yarn prisma studio
+```
+
+### Prisma Commands Guide
+
+```bash
+# Development workflow
+$ yarn prisma migrate dev        # Create/apply migrations + generate client
+$ yarn prisma migrate reset      # Reset DB + run migrations + seed
+$ yarn prisma db push           # Push schema changes without migrations
+$ yarn prisma studio           # View/edit data in browser
+
+# Production workflow
+$ yarn prisma migrate deploy    # Apply migrations
+$ yarn prisma generate         # Generate client only
+
+# Other useful commands
+$ yarn prisma format           # Format schema file
+$ yarn prisma validate        # Validate schema
+$ yarn prisma db seed         # Run seed script
+```
+
+### 5. Running the Application
+
+```bash
+# Development mode
 $ yarn run start
 
-# watch mode
+# Watch mode (recommended for development)
 $ yarn run start:dev:main
 # or
 $ yarn start:dev:main
 
-# production mode
+# Production mode
 $ yarn run start:prod
 ```
+
+### 6. Verify Installation
+
+1. The API should be running at `http://localhost:4400`
+2. Visit `http://localhost:4400/api/docs` for Swagger documentation
+3. Try the health check endpoint: `http://localhost:4400/api/v1/health`
+
+### Common Issues and Solutions
+
+1. **Database Connection Issues**
+
+   - Verify PostgreSQL is running
+   - Check DATABASE_URL in .env
+   - Ensure database exists
+
+2. **Prisma Issues**
+
+   - Run `yarn prisma generate` after schema changes
+   - Clear Prisma cache: `yarn prisma generate --force`
+
+3. **Port Conflicts**
+   - Default port is 3000
+   - Change in `main.ts` or use PORT env variable
 
 ## Test
 
