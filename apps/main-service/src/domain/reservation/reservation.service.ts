@@ -32,9 +32,6 @@ export class ReservationService {
       },
     });
 
-    // Update property stats asynchronously
-    this.updatePropertyStats(data.propertyId).catch(console.error);
-
     return reservation;
   }
 
@@ -77,47 +74,6 @@ export class ReservationService {
     });
   }
 
-  private async updatePropertyStats(propertyId: string) {
-    const currentDate = dayjs().format('YYYY-MM-DD');
-
-    // Get only completed reservations for the property
-    const reservations = await this.databaseService.reservation.findMany({
-      where: {
-        propertyId,
-        endDate: {
-          lte: currentDate, // only get reservations that have ended
-        },
-      },
-      select: {
-        startDate: true,
-        endDate: true,
-        totalPrice: true,
-      },
-    });
-
-    // Calculate total nights booked (only for completed reservations)
-    const totalNightsBooked = reservations.reduce((total, reservation) => {
-      const start = dayjs(reservation.startDate);
-      const end = dayjs(reservation.endDate);
-      return total + end.diff(start, 'day');
-    }, 0);
-
-    // Calculate total income (only from completed reservations)
-    const totalIncome = reservations.reduce(
-      (total, reservation) => total + reservation.totalPrice,
-      0,
-    );
-
-    // Update property stats
-    await this.databaseService.property.update({
-      where: { id: propertyId },
-      data: {
-        totalNightsBooked,
-        totalIncome,
-      },
-    });
-  }
-
   async deleteReservation(reservationId: string) {
     const reservation = await this.databaseService.reservation.findUnique({
       where: { id: reservationId },
@@ -130,9 +86,6 @@ export class ReservationService {
     const deletedReservation = await this.databaseService.reservation.delete({
       where: { id: reservationId },
     });
-
-    // Update property stats asynchronously
-    this.updatePropertyStats(reservation.propertyId).catch(console.error);
 
     return deletedReservation;
   }
@@ -169,11 +122,6 @@ export class ReservationService {
         totalPrice,
       },
     });
-
-    // Update property stats asynchronously
-    this.updatePropertyStats(existingReservation.propertyId).catch(
-      console.error,
-    );
 
     return updatedReservation;
   }
