@@ -414,4 +414,26 @@ export class PropertyService {
 
     return propertiesWithDetails;
   }
+
+  async getOwnerStats(userId: string) {
+    // Reuse existing method to get all properties with their stats
+    const properties = await this.findAllByCreatorIdWithFullDetails(userId);
+
+    // Aggregate the stats
+    const totalNightsBookedFromAllProperties = properties.reduce(
+      (total, prop) => total + prop.totalNightsBooked,
+      0,
+    );
+
+    const totalIncomeFromAllProperties = properties.reduce(
+      (total, prop) => total + prop.totalIncome,
+      0,
+    );
+
+    return {
+      totalProperties: properties.length,
+      totalNightsBookedFromAllProperties,
+      totalIncomeFromAllProperties,
+    };
+  }
 }
