@@ -54,8 +54,10 @@ export class ReservationService {
     userId?: string,
     skip?: number,
     take?: number,
+    status?: 'upcoming' | 'past' | 'all',
   ) {
     const where: any = {};
+    const currentDate = dayjs().format('YYYY-MM-DD');
 
     if (propertyId) {
       where.propertyId = propertyId;
@@ -63,6 +65,16 @@ export class ReservationService {
 
     if (userId) {
       where.userId = userId;
+    }
+
+    if (status === 'upcoming') {
+      where.startDate = {
+        gte: currentDate,
+      };
+    } else if (status === 'past') {
+      where.endDate = {
+        lt: currentDate,
+      };
     }
 
     return this.databaseService.reservation.findMany({

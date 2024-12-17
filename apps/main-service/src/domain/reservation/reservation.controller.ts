@@ -164,7 +164,17 @@ export class ReservationController {
   @ApiOperation({
     summary: 'Get all reservations for the current user',
     description:
-      "Returns paginated list of user's reservations ordered by creation date (newest first)",
+      "Returns paginated list of user's reservations. " +
+      'Can be filtered by status (upcoming/past/all) and ordered by creation date (newest first). ' +
+      'Upcoming: startDate >= today, Past: endDate < today',
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    type: String,
+    enum: ['upcoming', 'past', 'all'],
+    description: 'Filter reservations by status (default: all)',
+    example: 'upcoming',
   })
   @ApiQuery({
     name: 'skip',
@@ -195,6 +205,7 @@ export class ReservationController {
             totalPrice: 750.0,
             numberOfGuests: 2,
             createdAt: '2024-03-01T12:00:00Z',
+            status: 'upcoming',
             property: {
               name: 'Cozy Mountain Cabin',
               price: 150.0,
@@ -203,6 +214,30 @@ export class ReservationController {
                 id: 'user123',
                 username: 'johndoe',
                 email: 'john@example.com',
+              },
+            },
+            user: {
+              id: 'user456',
+              username: 'janedoe',
+              email: 'jane@example.com',
+            },
+          },
+          {
+            id: 'res124',
+            startDate: '2024-02-15',
+            endDate: '2024-02-20',
+            totalPrice: 500.0,
+            numberOfGuests: 1,
+            createdAt: '2024-02-01T12:00:00Z',
+            status: 'past',
+            property: {
+              name: 'Beach House',
+              price: 100.0,
+              coverUrl: 'https://example.com/beach.jpg',
+              creator: {
+                id: 'user789',
+                username: 'smith',
+                email: 'smith@example.com',
               },
             },
             user: {
@@ -224,12 +259,14 @@ export class ReservationController {
     @UserReq() user: User,
     @Query('skip') skip?: number,
     @Query('take') take?: number,
+    @Query('status') status: 'upcoming' | 'past' | 'all' = 'all',
   ) {
     return this.reservationService.findAll(
       undefined,
       user.id,
       skip ? Number(skip) : undefined,
       take ? Number(take) : undefined,
+      status,
     );
   }
 }
