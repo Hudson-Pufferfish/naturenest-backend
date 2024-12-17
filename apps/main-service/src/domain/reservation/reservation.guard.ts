@@ -24,7 +24,9 @@ export class ReservationGuard implements CanActivate {
 
     // Case 1: Getting reservations for a property (for property owners)
     if (propertyId) {
-      const property = await this.propertyService.findOrFailById(propertyId);
+      const property = await this.propertyService.findByIdWithFullDetails(
+        propertyId,
+      );
       if (property.creatorId !== user.id) {
         throw new ForbiddenException(
           'You are not allowed to view reservations for this property',

@@ -13,7 +13,9 @@ export class ReservationService {
   ) {}
 
   async create(data: CreateReservationDto) {
-    const property = await this.propertyService.findOrFailById(data.propertyId);
+    const property = await this.propertyService.findByIdWithFullDetails(
+      data.propertyId,
+    );
     const date1 = dayjs(data.startDate);
     const date2 = dayjs(data.endDate);
     const numberOfBookingDays = date2.diff(date1, 'day');

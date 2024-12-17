@@ -66,7 +66,7 @@ export class PropertyService {
   }
 
   async updateOrFailById(propertyId: string, data: UpdatePropertyDto) {
-    await this.findOrFailById(propertyId);
+    await this.findByIdWithFullDetails(propertyId);
 
     // Validate category exists if updating category
     if (data.categoryId) {
@@ -115,14 +115,14 @@ export class PropertyService {
   }
 
   async deleteOrFailById(propertyId: string) {
-    await this.findOrFailById(propertyId);
+    await this.findByIdWithFullDetails(propertyId);
 
     return this.databaseService.property.delete({
       where: { id: propertyId },
     });
   }
 
-  async findOrFailById(propertyId: string) {
+  async findByIdWithFullDetails(propertyId: string) {
     const property = await this.databaseService.property.findUnique({
       where: { id: propertyId },
       include: {
@@ -339,7 +339,7 @@ export class PropertyService {
     }));
   }
 
-  async findPublicById(propertyId: string) {
+  async findByIdPublic(propertyId: string) {
     const property = await this.databaseService.property.findUnique({
       where: { id: propertyId },
       select: {
@@ -409,7 +409,7 @@ export class PropertyService {
 
     // Then use findOrFailById for each property to get full details with stats
     const propertiesWithDetails = await Promise.all(
-      properties.map((prop) => this.findOrFailById(prop.id)),
+      properties.map((prop) => this.findByIdWithFullDetails(prop.id)),
     );
 
     return propertiesWithDetails;
