@@ -154,13 +154,6 @@ export class ReservationController {
     return this.reservationService.deleteReservation(reservationId);
   }
 
-  @ApiOperation({ summary: 'Get a specific reservation' })
-  @ApiParam({ name: 'reservationId', type: String })
-  @Get(':reservationId')
-  findById(@Param('reservationId') reservationId: string) {
-    return this.reservationService.findById(reservationId);
-  }
-
   @ApiOperation({
     summary: 'Get all reservations for the current user',
     description:
@@ -269,5 +262,12 @@ export class ReservationController {
       take ? Number(take) : undefined,
       status,
     );
+  }
+
+  @ApiOperation({ summary: 'Get a specific reservation' })
+  @ApiParam({ name: 'reservationId', type: String })
+  @Get(':reservationId')
+  findById(@Param('reservationId') reservationId: string) {
+    return this.reservationService.findById(reservationId);
   }
 }
