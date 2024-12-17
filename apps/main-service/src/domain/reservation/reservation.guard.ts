@@ -17,6 +17,13 @@ export class ReservationGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
+    const path = request.route.path;
+
+    // Allow /reservations/my endpoint - it only needs auth
+    if (path === '/v1/reservations/my') {
+      return true;
+    }
+
     const user = request.user;
     const propertyId = request.query.propertyId;
     const reservationId = request.params.reservationId;
