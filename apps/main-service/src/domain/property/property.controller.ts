@@ -441,4 +441,35 @@ export class PropertyController {
   getFullPropertyById(@Param('propertyId') propertyId: string) {
     return this.propertyService.findByIdWithFullDetails(propertyId);
   }
+
+  @ApiOperation({
+    summary: "Get owner's property stats",
+    description:
+      'Returns aggregated stats for all properties owned by current user. ' +
+      'Stats include total number of properties, total nights booked, and total income from completed reservations. ' +
+      'Returns zeros if user has no properties.',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Stats successfully retrieved',
+    schema: {
+      example: {
+        status: 200,
+        message: 'Success',
+        data: {
+          totalProperties: 5, // Returns 0 if no properties
+          totalNightsBookedFromAllProperties: 150, // Returns 0 if no completed reservations
+          totalIncomeFromAllProperties: 25000.0, // Returns 0 if no completed reservations
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - Invalid or missing token',
+  })
+  @Get('my/stats')
+  getMyPropertyStats(@UserReq() user: User) {
+    return this.propertyService.getOwnerStats(user.id);
+  }
 }

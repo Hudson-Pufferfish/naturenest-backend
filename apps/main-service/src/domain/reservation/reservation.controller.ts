@@ -166,7 +166,8 @@ export class ReservationController {
     description:
       "Returns paginated list of user's reservations. " +
       'Can be filtered by status (upcoming/past/all) and ordered by creation date (newest first). ' +
-      'Upcoming: startDate >= today, Past: endDate < today',
+      'Upcoming: startDate >= today, Past: endDate < today. ' +
+      'Returns empty array if no reservations found.',
   })
   @ApiQuery({
     name: 'status',
