@@ -49,7 +49,12 @@ export class ReservationService {
     return reservation;
   }
 
-  async findAll(propertyId?: string, userId?: string) {
+  async findAll(
+    propertyId?: string,
+    userId?: string,
+    skip?: number,
+    take?: number,
+  ) {
     const where: any = {};
 
     if (propertyId) {
@@ -62,6 +67,11 @@ export class ReservationService {
 
     return this.databaseService.reservation.findMany({
       where,
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: skip || 0,
+      take: take || 10,
       include: {
         property: {
           select: {
