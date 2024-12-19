@@ -5,10 +5,55 @@ import { MockContext } from '../../database/database.service.test';
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import dayjs from 'dayjs';
 
+jest.mock('dayjs', () => {
+  const originalDayjs = jest.requireActual('dayjs');
+  const mockedDayjs = (...args: any[]) => {
+    if (args.length === 0) {
+      // Mock current date to 2024-03-01
+      return originalDayjs('2024-03-01');
+    }
+    return originalDayjs(...args);
+  };
+  mockedDayjs.extend = originalDayjs.extend;
+  return mockedDayjs;
+});
+
 describe('ReservationService', () => {
   let service: ReservationService;
   let mockContext: MockContext;
   let propertyService: jest.Mocked<PropertyService>;
+
+  const mockProperty = {
+    id: 'prop1',
+    name: 'Test Property',
+    tagLine: 'Test tagline',
+    description: 'Test description',
+    price: 100,
+    coverUrl: 'http://test.com/image.jpg',
+    guests: 4,
+    bedrooms: 1,
+    beds: 1,
+    baths: 1,
+    countryCode: 'US',
+    creatorId: 'owner1',
+    categoryId: 'cat1',
+    totalNightsBooked: 0,
+    totalIncome: 0,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    reservations: [],
+    amenities: [],
+    category: {
+      id: 'cat1',
+      name: 'cabin',
+      description: 'test',
+    },
+    creator: {
+      id: 'owner1',
+      email: 'owner@test.com',
+      username: 'owner',
+    },
+  };
 
   beforeEach(async () => {
     propertyService = {
@@ -30,59 +75,28 @@ describe('ReservationService', () => {
   describe('create', () => {
     it('should create a reservation with valid data', async () => {
       // Arrange
-      const mockProperty = {
-        id: 'prop1',
-        name: 'Test Property',
-        tagLine: 'Test tagline',
-        description: 'Test description',
-        price: 100,
-        coverUrl: 'http://test.com/image.jpg',
-        guests: 4,
-        bedrooms: 1,
-        beds: 1,
-        baths: 1,
-        countryCode: 'US',
-        creatorId: 'owner1',
-        categoryId: 'cat1',
-        totalNightsBooked: 0,
-        totalIncome: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        reservations: [],
-        amenities: [],
-        category: {
-          id: 'cat1',
-          name: 'cabin',
-          description: 'test',
-        },
-        creator: {
-          id: 'owner1',
-          email: 'owner@test.com',
-          username: 'owner',
-        },
-      };
-
       const mockReservation = {
         id: 'res1',
         propertyId: 'prop1',
         userId: 'user1',
-        startDate: '2024-04-01',
-        endDate: '2024-04-03',
-        totalPrice: 600,
+        startDate: '2024-03-15',
+        endDate: '2024-03-20',
+        totalPrice: 1800,
         numberOfGuests: 3,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
       propertyService.findByIdWithFullDetails.mockResolvedValue(mockProperty);
+      mockContext.prisma.reservation.findMany.mockResolvedValue([]);
       mockContext.prisma.reservation.create.mockResolvedValue(mockReservation);
 
       // Act
       const result = await service.create({
         propertyId: 'prop1',
         userId: 'user1',
-        startDate: '2024-04-01',
-        endDate: '2024-04-03',
+        startDate: '2024-03-15',
+        endDate: '2024-03-20',
         numberOfGuests: 3,
       });
 
@@ -92,9 +106,9 @@ describe('ReservationService', () => {
         data: {
           propertyId: 'prop1',
           userId: 'user1',
-          startDate: '2024-04-01',
-          endDate: '2024-04-03',
-          totalPrice: 600,
+          startDate: '2024-03-15',
+          endDate: '2024-03-20',
+          totalPrice: 1800,
           numberOfGuests: 3,
         },
       });
@@ -102,50 +116,153 @@ describe('ReservationService', () => {
 
     it('should throw BadRequestException if guests exceed property capacity', async () => {
       // Arrange
-      const mockProperty = {
-        id: 'prop1',
-        name: 'Test Property',
-        tagLine: 'Test tagline',
-        description: 'Test description',
-        price: 100,
-        coverUrl: 'http://test.com/image.jpg',
+      const propertyWithLimitedCapacity = {
+        ...mockProperty,
         guests: 2,
-        bedrooms: 1,
-        beds: 1,
-        baths: 1,
-        countryCode: 'US',
-        creatorId: 'owner1',
-        categoryId: 'cat1',
-        totalNightsBooked: 0,
-        totalIncome: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        reservations: [],
-        amenities: [],
-        category: {
-          id: 'cat1',
-          name: 'cabin',
-          description: 'test',
-        },
-        creator: {
-          id: 'owner1',
-          email: 'owner@test.com',
-          username: 'owner',
-        },
       };
 
-      propertyService.findByIdWithFullDetails.mockResolvedValue(mockProperty);
+      propertyService.findByIdWithFullDetails.mockResolvedValue(
+        propertyWithLimitedCapacity,
+      );
+      mockContext.prisma.reservation.findMany.mockResolvedValue([]);
 
       // Act & Assert
       await expect(
         service.create({
           propertyId: 'prop1',
           userId: 'user1',
-          startDate: '2024-04-01',
-          endDate: '2024-04-03',
-          numberOfGuests: 3, // Trying to book for 3 guests
+          startDate: '2024-03-15',
+          endDate: '2024-03-20',
+          numberOfGuests: 3,
         }),
       ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should throw BadRequestException when overlapping reservations exceed property capacity', async () => {
+      // Arrange
+      const existingReservations = [
+        {
+          id: 'res1',
+          propertyId: 'prop1',
+          startDate: '2024-03-15',
+          endDate: '2024-03-20',
+          numberOfGuests: 3,
+          totalPrice: 300,
+          userId: 'user2',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      propertyService.findByIdWithFullDetails.mockResolvedValue(mockProperty);
+      mockContext.prisma.reservation.findMany.mockResolvedValue(
+        existingReservations,
+      );
+
+      // Act & Assert
+      await expect(
+        service.create({
+          propertyId: 'prop1',
+          userId: 'user1',
+          startDate: '2024-03-17',
+          endDate: '2024-03-19',
+          numberOfGuests: 2,
+        }),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should create reservation when total guests do not exceed capacity', async () => {
+      // Arrange
+      const existingReservations = [
+        {
+          id: 'res1',
+          propertyId: 'prop1',
+          startDate: '2024-03-15',
+          endDate: '2024-03-20',
+          numberOfGuests: 2,
+          totalPrice: 300,
+          userId: 'user2',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      const newReservation = {
+        id: 'res2',
+        propertyId: 'prop1',
+        userId: 'user1',
+        startDate: '2024-03-17',
+        endDate: '2024-03-19',
+        numberOfGuests: 2,
+        totalPrice: 300,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      propertyService.findByIdWithFullDetails.mockResolvedValue(mockProperty);
+      mockContext.prisma.reservation.findMany.mockResolvedValue(
+        existingReservations,
+      );
+      mockContext.prisma.reservation.create.mockResolvedValue(newReservation);
+
+      // Act
+      const result = await service.create({
+        propertyId: 'prop1',
+        userId: 'user1',
+        startDate: '2024-03-17',
+        endDate: '2024-03-19',
+        numberOfGuests: 2,
+      });
+
+      // Assert
+      expect(result).toEqual(newReservation);
+    });
+
+    it('should allow reservation when dates do not overlap', async () => {
+      // Arrange
+      const existingReservations = [
+        {
+          id: 'res1',
+          propertyId: 'prop1',
+          startDate: '2024-03-10',
+          endDate: '2024-03-15',
+          numberOfGuests: 4,
+          totalPrice: 300,
+          userId: 'user2',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      const newReservation = {
+        id: 'res2',
+        propertyId: 'prop1',
+        userId: 'user1',
+        startDate: '2024-03-16',
+        endDate: '2024-03-20',
+        numberOfGuests: 4,
+        totalPrice: 300,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+
+      propertyService.findByIdWithFullDetails.mockResolvedValue(mockProperty);
+      mockContext.prisma.reservation.findMany.mockResolvedValue(
+        existingReservations,
+      );
+      mockContext.prisma.reservation.create.mockResolvedValue(newReservation);
+
+      // Act
+      const result = await service.create({
+        propertyId: 'prop1',
+        userId: 'user1',
+        startDate: '2024-03-16',
+        endDate: '2024-03-20',
+        numberOfGuests: 4,
+      });
+
+      // Assert
+      expect(result).toEqual(newReservation);
     });
   });
 
@@ -224,30 +341,25 @@ describe('ReservationService', () => {
         id: 'res1',
         propertyId: 'prop1',
         userId: 'user1',
-        startDate: '2024-04-01',
-        endDate: '2024-04-03',
-        totalPrice: 600,
+        startDate: '2024-03-15',
+        endDate: '2024-03-20',
+        totalPrice: 1800,
         numberOfGuests: 3,
         createdAt: new Date(),
         updatedAt: new Date(),
-        property: {
-          price: 100,
-          guests: 4,
-        },
+        property: mockProperty,
       };
 
-      const mockUpdatedReservation = {
-        ...mockExistingReservation,
-        numberOfGuests: 2,
-        totalPrice: 400,
-      };
-
+      propertyService.findByIdWithFullDetails.mockResolvedValue(mockProperty);
       mockContext.prisma.reservation.findUnique.mockResolvedValue(
         mockExistingReservation,
       );
-      mockContext.prisma.reservation.update.mockResolvedValue(
-        mockUpdatedReservation,
-      );
+      mockContext.prisma.reservation.findMany.mockResolvedValue([]);
+      mockContext.prisma.reservation.update.mockResolvedValue({
+        ...mockExistingReservation,
+        numberOfGuests: 2,
+        totalPrice: 1200,
+      });
 
       // Act
       const result = await service.updateReservation('res1', 'user1', {
@@ -255,7 +367,11 @@ describe('ReservationService', () => {
       });
 
       // Assert
-      expect(result).toEqual(mockUpdatedReservation);
+      expect(result).toEqual({
+        ...mockExistingReservation,
+        numberOfGuests: 2,
+        totalPrice: 1200,
+      });
     });
 
     it('should throw NotFoundException if reservation not found', async () => {
@@ -268,6 +384,105 @@ describe('ReservationService', () => {
           numberOfGuests: 2,
         }),
       ).rejects.toThrow(NotFoundException);
+    });
+
+    it('should throw BadRequestException when update would exceed property capacity', async () => {
+      // Arrange
+      const existingReservation = {
+        id: 'res1',
+        propertyId: 'prop1',
+        userId: 'user1',
+        startDate: '2024-03-15',
+        endDate: '2024-03-20',
+        numberOfGuests: 2,
+        totalPrice: 500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        property: mockProperty,
+      };
+
+      const otherReservations = [
+        {
+          id: 'res2',
+          propertyId: 'prop1',
+          startDate: '2024-03-17',
+          endDate: '2024-03-19',
+          numberOfGuests: 3,
+          totalPrice: 200,
+          userId: 'user2',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      propertyService.findByIdWithFullDetails.mockResolvedValue(mockProperty);
+      mockContext.prisma.reservation.findUnique.mockResolvedValue(
+        existingReservation,
+      );
+      mockContext.prisma.reservation.findMany.mockResolvedValue(
+        otherReservations,
+      );
+
+      // Act & Assert
+      await expect(
+        service.updateReservation('res1', 'user1', {
+          numberOfGuests: 2,
+        }),
+      ).rejects.toThrow(BadRequestException);
+    });
+
+    it('should allow update when total guests do not exceed capacity', async () => {
+      // Arrange
+      const existingReservation = {
+        id: 'res1',
+        propertyId: 'prop1',
+        userId: 'user1',
+        startDate: '2024-03-15',
+        endDate: '2024-03-20',
+        numberOfGuests: 1,
+        totalPrice: 500,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        property: mockProperty,
+      };
+
+      const otherReservations = [
+        {
+          id: 'res2',
+          propertyId: 'prop1',
+          startDate: '2024-03-17',
+          endDate: '2024-03-19',
+          numberOfGuests: 2,
+          totalPrice: 200,
+          userId: 'user2',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
+
+      const updatedReservation = {
+        ...existingReservation,
+        numberOfGuests: 2,
+      };
+
+      propertyService.findByIdWithFullDetails.mockResolvedValue(mockProperty);
+      mockContext.prisma.reservation.findUnique.mockResolvedValue(
+        existingReservation,
+      );
+      mockContext.prisma.reservation.findMany.mockResolvedValue(
+        otherReservations,
+      );
+      mockContext.prisma.reservation.update.mockResolvedValue(
+        updatedReservation,
+      );
+
+      // Act
+      const result = await service.updateReservation('res1', 'user1', {
+        numberOfGuests: 2,
+      });
+
+      // Assert
+      expect(result).toEqual(updatedReservation);
     });
   });
 
