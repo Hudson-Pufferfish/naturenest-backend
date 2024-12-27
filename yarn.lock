@@ -5555,9 +5555,9 @@ ts-api-utils@^1.3.0:
   integrity sha512-i3eMG77UTMD0hZhgRS562pv83RC6ukSAC2GMNWc+9dieh/+jDM5u5YG+NHX6VNDRHQcHwmsTHctP9LhbC3WxVw==
 
 ts-essentials@^10.0.2:
-  version "10.0.3"
-  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-10.0.3.tgz#5a5546f00aae2368b47b4f0f6572e2cd6b423f33"
-  integrity sha512-/FrVAZ76JLTWxJOERk04fm8hYENDo0PWSP3YLQKxevLwWtxemGcl5JJEzN4iqfDlRve0ckyfFaOBu4xbNH/wZw==
+  version "10.0.4"
+  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-10.0.4.tgz#db8381c2e44cddb3339a2286174c4763bc1dcedb"
+  integrity sha512-lwYdz28+S4nicm+jFi6V58LaAIpxzhg9rLdgNC1VsdP/xiFBseGhF1M/shwCk6zMmwahBZdXcl34LVHrEang3A==
 
 ts-jest@29.2.5:
   version "29.2.5"
