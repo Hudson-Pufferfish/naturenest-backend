@@ -368,11 +368,11 @@
     chalk "^5.3.0"
 
 "@commitlint/is-ignored@^19.7.1":
-  version "19.7.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/is-ignored/-/is-ignored-19.7.1.tgz#d3d713d97df4da5d0a6440624d0db38e3a67494e"
-  integrity sha512-3IaOc6HVg2hAoGleRK3r9vL9zZ3XY0rf1RsUf6jdQLuaD46ZHnXBiOPTyQ004C4IvYjSWqJwlh0/u2P73aIE3g==
+  version "19.8.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/is-ignored/-/is-ignored-19.8.0.tgz#3e413168b1222e62798dd1a36c64d2454e7bb291"
+  integrity sha512-L2Jv9yUg/I+jF3zikOV0rdiHUul9X3a/oU5HIXhAJLE2+TXTnEBfqYP9G5yMw/Yb40SnR764g4fyDK6WR2xtpw==
   dependencies:
-    "@commitlint/types" "^19.5.0"
+    "@commitlint/types" "^19.8.0"
     semver "^7.6.0"
 
 "@commitlint/lint@^19.7.1":
@@ -464,6 +464,14 @@
   version "19.5.0"
   resolved "https://registry.yarnpkg.com/@commitlint/types/-/types-19.5.0.tgz#c5084d1231d4dd50e40bdb656ee7601f691400b3"
   integrity sha512-DSHae2obMSMkAtTBSOulg5X7/z+rGLxcXQIkg3OmWvY6wifojge5uVMydfhUvs7yQj+V7jNmRZ2Xzl8GJyqRgg==
+  dependencies:
+    "@types/conventional-commits-parser" "^5.0.0"
+    chalk "^5.3.0"
+
+"@commitlint/types@^19.8.0":
+  version "19.8.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/types/-/types-19.8.0.tgz#5a77c7a723a714995a51917edd0ecfcf29495d3c"
+  integrity sha512-LRjP623jPyf3Poyfb0ohMj8I3ORyBDOwXAgxxVPbSD0unJuW2mJWeiRfaQinjtccMqC5Wy1HOMfa4btKjbNxbg==
   dependencies:
     "@types/conventional-commits-parser" "^5.0.0"
     chalk "^5.3.0"
