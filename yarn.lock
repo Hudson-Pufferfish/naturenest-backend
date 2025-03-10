@@ -355,9 +355,9 @@
     lodash.upperfirst "^4.3.1"
 
 "@commitlint/execute-rule@^19.5.0":
-  version "19.5.0"
-  resolved "https://registry.yarnpkg.com/@commitlint/execute-rule/-/execute-rule-19.5.0.tgz#c13da8c03ea0379f30856111e27d57518e25b8a2"
-  integrity sha512-aqyGgytXhl2ejlk+/rfgtwpPexYyri4t8/n4ku6rRJoRhGZpLFMqrZ+YaubeGysCP6oz4mMA34YSTaSOKEeNrg==
+  version "19.8.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/execute-rule/-/execute-rule-19.8.0.tgz#ebcac26dc75d481e223b0c37d59e5bdd7a164d4a"
+  integrity sha512-fuLeI+EZ9x2v/+TXKAjplBJWI9CNrHnyi5nvUQGQt4WRkww/d95oVRsc9ajpt4xFrFmqMZkd/xBQHZDvALIY7A==
 
 "@commitlint/format@^19.5.0":
   version "19.5.0"
