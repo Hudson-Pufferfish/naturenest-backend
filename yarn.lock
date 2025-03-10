@@ -342,6 +342,14 @@
     "@commitlint/types" "^19.5.0"
     ajv "^8.11.0"
 
+"@commitlint/config-validator@^19.8.0":
+  version "19.8.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/config-validator/-/config-validator-19.8.0.tgz#0b30c274e4427d3942fd62ecf53c19d99f43ac4a"
+  integrity sha512-+r5ZvD/0hQC3w5VOHJhGcCooiAVdynFlCe2d6I9dU+PvXdV3O+fU4vipVg+6hyLbQUuCH82mz3HnT/cBQTYYuA==
+  dependencies:
+    "@commitlint/types" "^19.8.0"
+    ajv "^8.11.0"
+
 "@commitlint/ensure@^19.8.0":
   version "19.8.0"
   resolved "https://registry.yarnpkg.com/@commitlint/ensure/-/ensure-19.8.0.tgz#481c30706dc4aa4a8e85e7d1f1877c30e5201a0d"
@@ -427,12 +435,12 @@
     tinyexec "^0.3.0"
 
 "@commitlint/resolve-extends@^19.5.0":
-  version "19.5.0"
-  resolved "https://registry.yarnpkg.com/@commitlint/resolve-extends/-/resolve-extends-19.5.0.tgz#f3ec33e12d10df90cae0bfad8e593431fb61b18e"
-  integrity sha512-CU/GscZhCUsJwcKTJS9Ndh3AKGZTNFIOoQB2n8CmFnizE0VnEuJoum+COW+C1lNABEeqk6ssfc1Kkalm4bDklA==
+  version "19.8.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/resolve-extends/-/resolve-extends-19.8.0.tgz#2ef6c448ed7f925840cca282e3ce37bea8e9b726"
+  integrity sha512-CLanRQwuG2LPfFVvrkTrBR/L/DMy3+ETsgBqW1OvRxmzp/bbVJW0Xw23LnnExgYcsaFtos967lul1CsbsnJlzQ==
   dependencies:
-    "@commitlint/config-validator" "^19.5.0"
-    "@commitlint/types" "^19.5.0"
+    "@commitlint/config-validator" "^19.8.0"
+    "@commitlint/types" "^19.8.0"
     global-directory "^4.0.1"
     import-meta-resolve "^4.0.0"
     lodash.mergewith "^4.6.2"
