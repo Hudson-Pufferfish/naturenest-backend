@@ -129,6 +129,11 @@
   resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.27.1.tgz#ddb2f876534ff8013e6c2b299bf4d39b3c51d44c"
   integrity sha512-1gn1Up5YXka3YYAHGKpbideQ5Yjf1tDa9qYcgysz+cNCXukyLl6DjPXhD3VRwSb8c0J9tA4b2+rHEZtc6R0tlw==
 
+"@babel/helper-plugin-utils@^7.27.1":
+  version "7.27.1"
+  resolved "https://registry.yarnpkg.com/@babel/helper-plugin-utils/-/helper-plugin-utils-7.27.1.tgz#ddb2f876534ff8013e6c2b299bf4d39b3c51d44c"
+  integrity sha512-1gn1Up5YXka3YYAHGKpbideQ5Yjf1tDa9qYcgysz+cNCXukyLl6DjPXhD3VRwSb8c0J9tA4b2+rHEZtc6R0tlw==
+
 "@babel/helper-string-parser@^7.25.9":
   version "7.27.1"
   resolved "https://registry.yarnpkg.com/@babel/helper-string-parser/-/helper-string-parser-7.27.1.tgz#54da796097ab19ce67ed9f88b47bb2ec49367687"
@@ -205,11 +210,11 @@
     "@babel/helper-plugin-utils" "^7.14.5"
 
 "@babel/plugin-syntax-import-attributes@^7.24.7":
-  version "7.26.0"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-import-attributes/-/plugin-syntax-import-attributes-7.26.0.tgz#3b1412847699eea739b4f2602c74ce36f6b0b0f7"
-  integrity sha512-e2dttdsJ1ZTpi3B9UYGLw41hifAubg19AtCu/2I/F1QNVclOBr1dYpTdmdyZ84Xiz43BS/tCUkMAZNLv12Pi+A==
+  version "7.27.1"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-import-attributes/-/plugin-syntax-import-attributes-7.27.1.tgz#34c017d54496f9b11b61474e7ea3dfd5563ffe07"
+  integrity sha512-oFT0FrKHgF53f4vOsZGi2Hh3I35PfSmVs4IBFLFj4dnafP+hIWDLg3VyKmUHfLoLHlyxY4C7DGtmHuJgn+IGww==
   dependencies:
-    "@babel/helper-plugin-utils" "^7.25.9"
+    "@babel/helper-plugin-utils" "^7.27.1"
 
 "@babel/plugin-syntax-import-meta@^7.10.4":
   version "7.10.4"
