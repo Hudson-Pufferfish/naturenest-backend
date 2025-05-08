@@ -449,9 +449,9 @@
     "@commitlint/types" "^19.8.0"
 
 "@commitlint/to-lines@^19.8.0":
-  version "19.8.0"
-  resolved "https://registry.yarnpkg.com/@commitlint/to-lines/-/to-lines-19.8.0.tgz#f7bdf7878999c0620f3a2f46f829fcc1f1f1d118"
-  integrity sha512-3CKLUw41Cur8VMjh16y8LcsOaKbmQjAKCWlXx6B0vOUREplp6em9uIVhI8Cv934qiwkbi2+uv+mVZPnXJi1o9A==
+  version "19.8.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/to-lines/-/to-lines-19.8.1.tgz#c1a28a84542c7ba321c1c11178b83ae024257b47"
+  integrity sha512-98Mm5inzbWTKuZQr2aW4SReY6WUukdWXuZhrqf1QdKPZBCCsXuG87c+iP0bwtD6DBnmVVQjgp4whoHRVixyPBg==
 
 "@commitlint/top-level@^19.8.1":
   version "19.8.1"
