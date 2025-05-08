@@ -1239,10 +1239,10 @@
   dependencies:
     undici-types "~6.19.2"
 
-"@types/node@18.19.97":
-  version "18.19.97"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.97.tgz#38443553a3f6288c8cac3d1b465a3b33121bbf72"
-  integrity sha512-4r3Y9EuCJjWduiam85Fo4GBQtneaEuoaBSdiKo+o6qwQUh0JFVBe7cRUK6I6yVzA0S1gBJJfoQx4VtBH4e5ikg==
+"@types/node@18.19.99":
+  version "18.19.99"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.99.tgz#0061a7987ea648d0f35ca4ac91fef766d0d26d23"
+  integrity sha512-tNGqoGjjI4vY5jfm3lnqgR6yS8wyT76SfsWefLWRyh/cEK4UHmPVyqHZdafI/SNu1PQzfo2JLBWfG8eMmD7KrQ==
   dependencies:
     undici-types "~5.26.4"
 
