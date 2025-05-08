@@ -334,7 +334,7 @@
     "@commitlint/types" "^19.8.1"
     conventional-changelog-conventionalcommits "^7.0.2"
 
-"@commitlint/config-validator@^19.8.0", "@commitlint/config-validator@^19.8.1":
+"@commitlint/config-validator@^19.8.1":
   version "19.8.1"
   resolved "https://registry.yarnpkg.com/@commitlint/config-validator/-/config-validator-19.8.1.tgz#29e9bb1360fa41b9439b23d8e25deaaf097306b5"
   integrity sha512-0jvJ4u+eqGPBIzzSdqKNX1rvdbSU1lPNYlfQQRIFnBgLy26BtC0cFnr7c/AyuzExMxWsMOte6MkTi9I3SQ3iGQ==
@@ -354,10 +354,10 @@
     lodash.startcase "^4.4.0"
     lodash.upperfirst "^4.3.1"
 
-"@commitlint/execute-rule@^19.8.0":
-  version "19.8.0"
-  resolved "https://registry.yarnpkg.com/@commitlint/execute-rule/-/execute-rule-19.8.0.tgz#ebcac26dc75d481e223b0c37d59e5bdd7a164d4a"
-  integrity sha512-fuLeI+EZ9x2v/+TXKAjplBJWI9CNrHnyi5nvUQGQt4WRkww/d95oVRsc9ajpt4xFrFmqMZkd/xBQHZDvALIY7A==
+"@commitlint/execute-rule@^19.8.1":
+  version "19.8.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/execute-rule/-/execute-rule-19.8.1.tgz#53000363b737773e2d25e97c20f15eaa78742067"
+  integrity sha512-YfJyIqIKWI64Mgvn/sE7FXvVMQER/Cd+s3hZke6cI1xgNT/f6ZAz5heND0QtffH+KbcqAwXDEE1/5niYayYaQA==
 
 "@commitlint/format@^19.8.0":
   version "19.8.1"
@@ -386,14 +386,14 @@
     "@commitlint/types" "^19.8.0"
 
 "@commitlint/load@^19.8.0":
-  version "19.8.0"
-  resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-19.8.0.tgz#7c7078fbdc9c4e3a14fa5a8684c3cb854353551e"
-  integrity sha512-4rvmm3ff81Sfb+mcWT5WKlyOa+Hd33WSbirTVUer0wjS1Hv/Hzr07Uv1ULIV9DkimZKNyOwXn593c+h8lsDQPQ==
+  version "19.8.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/load/-/load-19.8.1.tgz#b997b1f65a961bf0a47189f15f6dc8786ceb4576"
+  integrity sha512-9V99EKG3u7z+FEoe4ikgq7YGRCSukAcvmKQuTtUyiYPnOd9a2/H9Ak1J9nJA1HChRQp9OA/sIKPugGS+FK/k1A==
   dependencies:
-    "@commitlint/config-validator" "^19.8.0"
-    "@commitlint/execute-rule" "^19.8.0"
-    "@commitlint/resolve-extends" "^19.8.0"
-    "@commitlint/types" "^19.8.0"
+    "@commitlint/config-validator" "^19.8.1"
+    "@commitlint/execute-rule" "^19.8.1"
+    "@commitlint/resolve-extends" "^19.8.1"
+    "@commitlint/types" "^19.8.1"
     chalk "^5.3.0"
     cosmiconfig "^9.0.0"
     cosmiconfig-typescript-loader "^6.1.0"
@@ -426,7 +426,7 @@
     minimist "^1.2.8"
     tinyexec "^1.0.0"
 
-"@commitlint/resolve-extends@^19.8.0":
+"@commitlint/resolve-extends@^19.8.1":
   version "19.8.1"
   resolved "https://registry.yarnpkg.com/@commitlint/resolve-extends/-/resolve-extends-19.8.1.tgz#a44bb4c22e3e7d407cc9a3758fcf58f5c360b694"
   integrity sha512-GM0mAhFk49I+T/5UCYns5ayGStkTt4XFFrjjf0L4S26xoMTSkdCf9ZRO8en1kuopC4isDFuEm7ZOm/WRVeElVg==
