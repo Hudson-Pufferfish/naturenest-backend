@@ -402,9 +402,9 @@
     lodash.uniq "^4.5.0"
 
 "@commitlint/message@^19.8.0":
-  version "19.8.0"
-  resolved "https://registry.yarnpkg.com/@commitlint/message/-/message-19.8.0.tgz#1ac1c527a601b329373ba50ffd70a713acb0b8ca"
-  integrity sha512-qs/5Vi9bYjf+ZV40bvdCyBn5DvbuelhR6qewLE8Bh476F7KnNyLfdM/ETJ4cp96WgeeHo6tesA2TMXS0sh5X4A==
+  version "19.8.1"
+  resolved "https://registry.yarnpkg.com/@commitlint/message/-/message-19.8.1.tgz#d5d0d87837483d9f9b4559ffa06e1aaa26d266d6"
+  integrity sha512-+PMLQvjRXiU+Ae0Wc+p99EoGEutzSXFVwQfa3jRNUZLNW5odZAyseb92OSBTKCu+9gGZiJASt76Cj3dLTtcTdg==
 
 "@commitlint/parse@^19.8.0":
   version "19.8.0"
