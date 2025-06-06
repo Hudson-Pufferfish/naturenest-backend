@@ -295,15 +295,7 @@
     debug "^4.3.1"
     globals "^11.1.0"
 
-"@babel/types@^7.0.0", "@babel/types@^7.20.7", "@babel/types@^7.27.1", "@babel/types@^7.27.3", "@babel/types@^7.3.3":
-  version "7.27.6"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.27.6.tgz#a434ca7add514d4e646c80f7375c0aa2befc5535"
-  integrity sha512-ETyHEk2VHHvl9b9jZP5IHPavHYk57EhanlRRuae9XCpb/j5bDCbPPMOBfCWhnl/7EDJz0jEMCi/RhccCE8r1+Q==
-  dependencies:
-    "@babel/helper-string-parser" "^7.27.1"
-    "@babel/helper-validator-identifier" "^7.27.1"
-
-"@babel/types@^7.27.6":
+"@babel/types@^7.0.0", "@babel/types@^7.20.7", "@babel/types@^7.27.1", "@babel/types@^7.27.3", "@babel/types@^7.27.6", "@babel/types@^7.3.3":
   version "7.27.6"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.27.6.tgz#a434ca7add514d4e646c80f7375c0aa2befc5535"
   integrity sha512-ETyHEk2VHHvl9b9jZP5IHPavHYk57EhanlRRuae9XCpb/j5bDCbPPMOBfCWhnl/7EDJz0jEMCi/RhccCE8r1+Q==
@@ -1247,10 +1239,10 @@
   dependencies:
     undici-types "~6.19.2"
 
-"@types/node@18.19.110":
-  version "18.19.110"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.110.tgz#33e25fa1796ba5023cee137f24f15d332d2d45d1"
-  integrity sha512-WW2o4gTmREtSnqKty9nhqF/vA0GKd0V/rbC0OyjSk9Bz6bzlsXKT+i7WDdS/a0z74rfT2PO4dArVCSnapNLA5Q==
+"@types/node@18.19.111":
+  version "18.19.111"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.19.111.tgz#e95b89efc24cc625834b43bcd70bd5591a5dfba5"
+  integrity sha512-90sGdgA+QLJr1F9X79tQuEut0gEYIfkX9pydI4XGRgvFo9g2JWswefI+WUSUHPYVBHYSEfTEqBxA5hQvAZB3Mw==
   dependencies:
     undici-types "~5.26.4"
 
