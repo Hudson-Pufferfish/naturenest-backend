@@ -320,15 +320,7 @@
     "@babel/types" "^7.28.0"
     debug "^4.3.1"
 
-"@babel/types@^7.0.0", "@babel/types@^7.20.7", "@babel/types@^7.27.1", "@babel/types@^7.27.6", "@babel/types@^7.27.7", "@babel/types@^7.3.3":
-  version "7.27.7"
-  resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.27.7.tgz#40eabd562049b2ee1a205fa589e629f945dce20f"
-  integrity sha512-8OLQgDScAOHXnAz2cV+RfzzNMipuLVBz2biuAJFMV9bfkNf393je3VM8CLkjQodW5+iWsSJdSgSWT6rsZoXHPw==
-  dependencies:
-    "@babel/helper-string-parser" "^7.27.1"
-    "@babel/helper-validator-identifier" "^7.27.1"
-
-"@babel/types@^7.28.0":
+"@babel/types@^7.0.0", "@babel/types@^7.20.7", "@babel/types@^7.27.1", "@babel/types@^7.27.6", "@babel/types@^7.27.7", "@babel/types@^7.28.0", "@babel/types@^7.3.3":
   version "7.28.0"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.28.0.tgz#2fd0159a6dc7353933920c43136335a9b264d950"
   integrity sha512-jYnje+JyZG5YThjHiF28oT4SIZLnYOcSBb6+SDaFIyzDVSkXQmQQYclJ2R+YxcdmK0AX6x1E5OQNtuh3jHDrUg==
@@ -779,15 +771,7 @@
     "@types/yargs" "^17.0.8"
     chalk "^4.0.0"
 
-"@jridgewell/gen-mapping@^0.3.12":
-  version "0.3.12"
-  resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.12.tgz#2234ce26c62889f03db3d7fea43c1932ab3e927b"
-  integrity sha512-OuLGC46TjB5BbN1dH8JULVVZY4WTdkF7tV9Ys6wLL1rubZnCMstOhNHueU5bLCrnRuDhKPDM4g6sw4Bel5Gzqg==
-  dependencies:
-    "@jridgewell/sourcemap-codec" "^1.5.0"
-    "@jridgewell/trace-mapping" "^0.3.24"
-
-"@jridgewell/gen-mapping@^0.3.5":
+"@jridgewell/gen-mapping@^0.3.12", "@jridgewell/gen-mapping@^0.3.5":
   version "0.3.12"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.12.tgz#2234ce26c62889f03db3d7fea43c1932ab3e927b"
   integrity sha512-OuLGC46TjB5BbN1dH8JULVVZY4WTdkF7tV9Ys6wLL1rubZnCMstOhNHueU5bLCrnRuDhKPDM4g6sw4Bel5Gzqg==
