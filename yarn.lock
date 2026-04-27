@@ -3792,12 +3792,13 @@ jest-message-util@^29.7.0:
     slash "^3.0.0"
     stack-utils "^2.0.3"
 
-jest-mock-extended@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/jest-mock-extended/-/jest-mock-extended-4.0.0.tgz#fe8cfa686c7ada4be2e7f7a3eced794b1338c18b"
-  integrity sha512-7BZpfuvLam+/HC+NxifIi9b+5VXj/utUDMPUqrDJehGWVuXPtLS9Jqlob2mJLrI/pg2k1S8DMfKDvEB88QNjaQ==
+jest-mock-extended@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/jest-mock-extended/-/jest-mock-extended-4.0.1.tgz#72338cc809a2a9d0a3b6c251e8b73f44ffaebffa"
+  integrity sha512-Q/4k/yefiv/Al3n755V9xDEwMiL+7LwkjRKjaORkgCdovZv00hF/D0QypLoqO+MVfrYkzCYa4BYlcEKA74iOgQ==
   dependencies:
-    ts-essentials "^10.0.2"
+    lodash.isequal "^4.5.0"
+    ts-essentials "^10.1.1"
 
 jest-mock@^29.7.0:
   version "29.7.0"
@@ -4221,6 +4222,11 @@ lodash.isboolean@^3.0.3:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz#6c2e171db2a257cd96802fd43b01b20d5f5870f6"
   integrity sha512-Bz5mupy2SVbPHURB98VAcw+aHh4vRV5IPNhILUCsOzRmsTmSQ17jIuqopAentWoehktxGd9e/hbIXq980/1QJg==
+
+lodash.isequal@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
+  integrity sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==
 
 lodash.isinteger@^4.0.4:
   version "4.0.4"
@@ -5628,10 +5634,10 @@ ts-api-utils@^2.5.0:
   resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-2.5.0.tgz#4acd4a155e22734990a5ed1fe9e97f113bcb37c1"
   integrity sha512-OJ/ibxhPlqrMM0UiNHJ/0CKQkoKF243/AEmplt3qpRgkW8VG7IfOS41h7V8TjITqdByHzrjcS/2si+y4lIh8NA==
 
-ts-essentials@^10.0.2:
-  version "10.1.1"
-  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-10.1.1.tgz#4e1d29b7c9b33c1a2744482376634c4fafba5210"
-  integrity sha512-4aTB7KLHKmUvkjNj8V+EdnmuVTiECzn3K+zIbRthumvHu+j44x3w63xpfs0JL3NGIzGXqoQ7AV591xHO+XrOTw==
+ts-essentials@^10.1.1:
+  version "10.2.0"
+  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-10.2.0.tgz#72996d9e2525c205d06b432450e1ebc52214e267"
+  integrity sha512-z9FlLywg0XEV46Ws1FwYN4NZDMr9qAe38lTTtgVBqzhhyEgwrnCUkFe4MEqnvar1kY1kFEnlkp56bxn2g0V+UA==
 
 ts-jest@29.4.9:
   version "29.4.9"
